@@ -1342,3 +1342,29 @@ const rvObs=new IntersectionObserver(es=>{es.forEach(e=>{if(e.isIntersecting)e.t
 document.querySelectorAll('.rv,.rv-l,.rv-r').forEach(el=>rvObs.observe(el));
 
 // COUNTER
+const cObs=new IntersectionObserver(es=>{
+  es.forEach(e=>{
+    if(e.isIntersecting&&!e.target.dataset.done){
+      e.target.dataset.done='1';
+      const target=parseInt(e.target.dataset.counter);
+      let c=0;const step=target/60;
+      const t=setInterval(()=>{c=Math.min(c+step,target);e.target.textContent=Math.round(c);if(c>=target)clearInterval(t);},16);
+    }
+  });
+},{threshold:.5});
+document.querySelectorAll('[data-counter]').forEach(el=>cObs.observe(el));
+
+// MOBILE MENU
+function toggleMob(){document.getElementById('mob').classList.toggle('open');}
+function closeMob(){document.getElementById('mob').classList.remove('open');}
+
+// FAQ
+function faqToggle(el){
+  const item=el.parentElement;
+  const wasOpen=item.classList.contains('open');
+  document.querySelectorAll('.faq-item').forEach(i=>i.classList.remove('open'));
+  if(!wasOpen)item.classList.add('open');
+}
+</script>
+</body>
+</html>
