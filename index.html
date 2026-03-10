@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ChronoSenSium — Ingénierie Souveraine Augmentée</title>
+<meta name="description" content="Convergence quantique, matériaux de synthèse atomique et énergie pérenne. La couche d'infrastructure de la prochaine civilisation.">
+<meta property="og:title" content="ChronoSenSium — Ingénierie Souveraine Augmentée">
+<meta property="og:description" content="Convergence quantique, matériaux de synthèse et énergie pérenne.">
+<meta property="og:url" content="https://chronosensiumtechnologies.com">
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,400&display=swap');
+
+*{margin:0;padding:0;box-sizing:border-box}
+:root{
+  --purple:#7c3aed;--purple-light:#a78bfa;--purple-dim:#4c1d95;
+  --bg:#06060f;--bg2:#09090f;--surface:#0d0d1a;--border:#1a1a30;
+  --text:#e0e0f0;--muted:#7070a0;--muted2:#4a4a70
+}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{font-family:'Inter',sans-serif;background:var(--bg);color:var(--text);overflow-x:hidden}
+::selection{background:var(--purple);color:white}
+
+/* ── CANVAS BACKGROUND ── */
+#canvas-bg{position:fixed;top:0;left:0;width:100%;height:100%;z-index:0;pointer-events:none;opacity:.35}
+
+/* ── NAV ── */
+nav{position:fixed;top:0;left:0;right:0;z-index:1000;
+    padding:1.1rem 5%;display:flex;justify-content:space-between;align-items:center;
+    transition:all 0.4s}
+nav.scrolled{background:rgba(6,6,15,0.95);backdrop-filter:blur(20px);
+             border-bottom:1px solid var(--border);padding:.8rem 5%}
+.nav-logo{display:flex;align-items:center;gap:12px;text-decoration:none}
+.logo-svg{width:38px;height:38px;flex-shrink:0}
+.logo-text{font-family:'Inter',sans-serif;font-size:.95rem;font-weight:600;
+           letter-spacing:.12em;color:white}
+.logo-text span{color:var(--purple-light)}
+.nav-links{display:flex;gap:2.5rem;align-items:center}
+.nav-links a{color:var(--muted);text-decoration:none;font-size:.82rem;font-weight:500;
+             letter-spacing:.06em;text-transform:uppercase;transition:color .2s}
+.nav-links a:hover{color:white}
+.nav-cta{background:var(--purple)!important;color:white!important;
+         padding:9px 22px;border-radius:6px;letter-spacing:.05em!important}
+.nav-cta:hover{background:var(--purple-light)!important;transform:translateY(-1px)}
+.hamburger{display:none;flex-direction:column;gap:5px;cursor:pointer}
+.hamburger span{width:24px;height:2px;background:var(--text);border-radius:2px;transition:all .3s}
+
+/* ── HERO ── */
+.hero{position:relative;z-index:1;min-height:100vh;display:flex;flex-direction:column;
+      justify-content:center;padding:160px 5% 100px;overflow:hidden}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;
+              background:rgba(124,58,237,.12);border:1px solid rgba(124,58,237,.3);
+              padding:6px 16px;border-radius:100px;margin-bottom:2rem;
+              font-size:.78rem;font-weight:500;letter-spacing:.1em;color:var(--purple-light);
+              text-transform:uppercase}
+.hero-eyebrow::before{content:'';width:6px;height:6px;border-radius:50%;
+                       background:var(--purple-light);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.5;transform:scale(1.4)}}
+h1{font-family:'Playfair Display',serif;font-size:clamp(3.2rem,8vw,6.5rem);
+   line-height:1.02;margin-bottom:2rem;max-width:900px}
+h1 .line1{display:block;color:white}
+h1 .line2{display:block;background:linear-gradient(135deg,#a78bfa,#7c3aed,#c4b5fd);
+          -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text}
+h1 .line3{display:block;color:white;font-style:italic;font-weight:400}
+.hero-sub{font-size:clamp(1rem,1.5vw,1.2rem);color:var(--muted);line-height:1.9;
+          max-width:600px;margin-bottom:3rem;font-weight:300}
+.hero-sub strong{color:var(--purple-light);font-weight:500}
+.btn-group{display:flex;gap:1rem;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;gap:8px;padding:15px 32px;border-radius:8px;
+     font-size:.92rem;font-weight:600;letter-spacing:.04em;text-decoration:none;
+     transition:all .3s;cursor:pointer;border:none;font-family:'Inter',sans-serif}
+.btn-primary{background:linear-gradient(135deg,var(--purple),#9333ea);color:white;
+             box-shadow:0 4px 24px rgba(124,58,237,.4)}
+.btn-primary:hover{transform:translateY(-3px);box-shadow:0 8px 32px rgba(124,58,237,.6)}
+.btn-ghost{background:transparent;color:var(--purple-light);border:1px solid rgba(124,58,237,.4)}
+.btn-ghost:hover{background:rgba(124,58,237,.1);border-color:var(--purple);transform:translateY(-2px)}
+.btn svg{width:16px;height:16px;transition:transform .3s}
+.btn:hover svg{transform:translateX(3px)}
+.hero-scroll{position:absolute;bottom:3rem;left:50%;transform:translateX(-50%);
+             display:flex;flex-direction:column;align-items:center;gap:.5rem;
+             color:var(--muted2);font-size:.72rem;letter-spacing:.15em;text-transform:uppercase;
+             animation:float 3s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-8px)}}
+.scroll-line{width:1px;height:40px;background:linear-gradient(to bottom,var(--purple),transparent)}
+.hero-badge{position:absolute;right:5%;bottom:20%;background:var(--surface);
+            border:1px solid var(--border);border-radius:16px;padding:1.2rem 1.5rem;
+            max-width:260px;backdrop-filter:blur(10px);animation:float 4s ease-in-out infinite .5s;
+            display:none}
+@media(min-width:1100px){.hero-badge{display:block}}
+.hero-badge-label{font-size:.7rem;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.5rem}
+.hero-badge-val{font-size:1.5rem;font-weight:700;color:white;font-family:'Playfair Display',serif}
+.hero-badge-sub{font-size:.78rem;color:var(--purple-light);margin-top:.3rem}
+
+/* ── SECTION SYSTEM ── */
+.section{position:relative;z-index:1;padding:110px 5%}
+.section-dark{background:rgba(0,0,0,.4);border-top:1px solid var(--border);border-bottom:1px solid var(--border)}
+.container{max-width:1200px;margin:0 auto}
+.section-label{font-size:.72rem;font-weight:600;letter-spacing:.2em;text-transform:uppercase;
+               color:var(--purple);margin-bottom:1rem}
+h2{font-family:'Playfair Display',serif;font-size:clamp(2rem,4vw,3rem);
+   color:white;margin-bottom:1.5rem;line-height:1.15}
+h2 em{font-style:italic;color:var(--purple-light)}
+.lead{font-size:1.1rem;color:var(--muted);line-height:1.9;max-width:700px;font-weight:300}
+
+/* ── SCROLL REVEAL ── */
+.reveal{opacity:0;transform:translateY(40px);transition:opacity .8s ease,transform .8s ease}
+.reveal.visible{opacity:1;transform:translateY(0)}
+.reveal-left{opacity:0;transform:translateX(-40px);transition:opacity .8s ease,transform .8s ease}
+.reveal-left.visible{opacity:1;transform:translateX(0)}
+.reveal-right{opacity:0;transform:translateX(40px);transition:opacity .8s ease,transform .8s ease}
+.reveal-right.visible{opacity:1;transform:translateX(0)}
+.delay-1{transition-delay:.1s}.delay-2{transition-delay:.2s}
+.delay-3{transition-delay:.3s}.delay-4{transition-delay:.4s}.delay-5{transition-delay:.5s}
+
+/* ── STATS BAR ── */
+.stats-bar{position:relative;z-index:1;
+           background:linear-gradient(135deg,rgba(124,58,237,.15),rgba(76,29,149,.1));
+           border-top:1px solid rgba(124,58,237,.2);border-bottom:1px solid rgba(124,58,237,.2);
+           padding:60px 5%}
+.stats-grid{max-width:1200px;margin:0 auto;
+            display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:2rem}
+.stat-item{text-align:center;padding:1rem}
+.stat-num{font-size:2.5rem;font-weight:700;font-family:'Playfair Display',serif;
+          background:linear-gradient(135deg,#c4b5fd,#7c3aed);
+          -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+          display:block;margin-bottom:.5rem}
+.stat-label{font-size:.78rem;color:var(--muted);line-height:1.6;letter-spacing:.03em}
+.stat-divider{width:1px;background:var(--border);margin:0 auto}
+
+/* ── CARDS ── */
+.grid-3{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.5rem;margin-top:3rem}
+.card{background:var(--surface);border:1px solid var(--border);border-radius:16px;
+      padding:2.5rem;transition:all .4s;cursor:default;position:relative;overflow:hidden}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:2px;
+              background:linear-gradient(90deg,transparent,var(--purple),transparent);
+              opacity:0;transition:opacity .4s}
+.card:hover{border-color:rgba(124,58,237,.4);transform:translateY(-6px);
+            box-shadow:0 20px 60px rgba(124,58,237,.15)}
+.card:hover::before{opacity:1}
+.card-icon-wrap{width:52px;height:52px;border-radius:14px;display:flex;align-items:center;
+                justify-content:center;margin-bottom:1.5rem;font-size:1.5rem;
+                background:linear-gradient(135deg,rgba(124,58,237,.2),rgba(124,58,237,.05));
+                border:1px solid rgba(124,58,237,.2)}
+h3{font-size:1.1rem;font-weight:600;color:white;margin-bottom:.8rem;letter-spacing:.02em}
+.card p{font-size:.9rem;color:var(--muted);line-height:1.8}
+
+/* ── BREAKTHROUGH ITEMS ── */
+.breakthrough{margin-top:2.5rem;display:flex;flex-direction:column;gap:1rem}
+.bt-item{display:flex;gap:1.5rem;padding:1.8rem;background:var(--surface);
+         border:1px solid var(--border);border-radius:12px;transition:all .3s;align-items:flex-start}
+.bt-item:hover{border-color:rgba(124,58,237,.3);background:rgba(124,58,237,.05)}
+.bt-badge{flex-shrink:0;background:rgba(124,58,237,.15);border:1px solid rgba(124,58,237,.3);
+          color:var(--purple-light);padding:4px 12px;border-radius:100px;
+          font-size:.7rem;font-weight:600;letter-spacing:.08em;white-space:nowrap;margin-top:3px}
+.bt-content strong{display:block;color:white;font-size:.9rem;margin-bottom:.4rem}
+.bt-content p{font-size:.85rem;color:var(--muted);line-height:1.7;margin:0}
+
+/* ── QUOTE ── */
+.blockquote{margin:4rem 0;padding:2.5rem 3rem;background:linear-gradient(135deg,rgba(124,58,237,.08),transparent);
+            border-left:3px solid var(--purple);border-radius:0 16px 16px 0;position:relative}
+.blockquote::before{content:'"';position:absolute;top:-1rem;left:2rem;font-size:5rem;
+                    color:var(--purple);opacity:.3;font-family:'Playfair Display',serif;line-height:1}
+.blockquote p{font-family:'Playfair Display',serif;font-size:1.25rem;font-style:italic;
+              color:var(--purple-light);line-height:1.9;margin:0;max-width:800px}
+.blockquote cite{display:block;margin-top:1rem;font-size:.78rem;color:var(--muted);
+                 font-family:'Inter',sans-serif;font-style:normal;letter-spacing:.05em}
+
+/* ── TIMELINE ── */
+.timeline{margin-top:3rem;position:relative}
+.timeline::before{content:'';position:absolute;left:88px;top:0;bottom:0;width:1px;background:var(--border)}
+.tl-item{display:flex;gap:2rem;margin-bottom:2.5rem;align-items:flex-start;position:relative}
+.tl-year{flex-shrink:0;width:72px;text-align:right;font-size:.75rem;font-weight:700;
+         color:var(--purple-light);letter-spacing:.05em;padding-top:.3rem;font-family:'Inter',sans-serif}
+.tl-dot{flex-shrink:0;width:16px;height:16px;border-radius:50%;border:2px solid var(--purple);
+        background:var(--bg);margin-top:.3rem;position:relative;z-index:1;transition:all .3s}
+.tl-item:hover .tl-dot{background:var(--purple);box-shadow:0 0 12px var(--purple)}
+.tl-content h4{font-size:.95rem;font-weight:600;color:white;margin-bottom:.4rem}
+.tl-content p{font-size:.88rem;color:var(--muted);line-height:1.8;margin:0}
+
+/* ── PARTNERS ── */
+.partners-wrap{display:flex;flex-wrap:wrap;gap:.8rem;margin-top:2rem}
+.partner-pill{padding:8px 20px;border:1px solid var(--border);border-radius:100px;
+              color:var(--muted);font-size:.8rem;font-weight:500;transition:all .3s;cursor:default}
+.partner-pill:hover{border-color:var(--purple);color:var(--purple-light);background:rgba(124,58,237,.05)}
+
+/* ── CONTACT ── */
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:5rem;margin-top:3rem}
+@media(max-width:768px){.contact-grid{grid-template-columns:1fr;gap:2rem}}
+.contact-info h3{font-size:1.3rem;color:white;margin-bottom:1rem}
+.contact-info p{color:var(--muted);line-height:1.9;font-size:.95rem}
+.contact-email{display:inline-flex;align-items:center;gap:8px;color:var(--purple-light);
+               text-decoration:none;margin-top:1.5rem;font-weight:500;transition:gap .3s}
+.contact-email:hover{gap:14px}
+.form-group{margin-bottom:1rem}
+.form-group input,.form-group textarea,.form-group select{
+  width:100%;background:var(--surface);border:1px solid var(--border);
+  color:var(--text);padding:13px 16px;border-radius:10px;font-size:.9rem;
+  font-family:'Inter',sans-serif;transition:all .3s;appearance:none;-webkit-appearance:none}
+.form-group input::placeholder,.form-group textarea::placeholder{color:var(--muted2)}
+.form-group input:focus,.form-group textarea:focus{outline:none;border-color:var(--purple);
+  background:rgba(124,58,237,.05);box-shadow:0 0 0 3px rgba(124,58,237,.1)}
+.form-group textarea{height:130px;resize:vertical}
+.form-label{display:block;font-size:.78rem;font-weight:500;color:var(--muted);
+            letter-spacing:.06em;text-transform:uppercase;margin-bottom:.5rem}
+
+/* ── FOOTER ── */
+footer{position:relative;z-index:1;background:rgba(0,0,0,.6);border-top:1px solid var(--border);
+       padding:4rem 5% 2.5rem}
+.footer-grid{max-width:1200px;margin:0 auto;display:grid;
+             grid-template-columns:2fr 1fr 1fr;gap:3rem;margin-bottom:3rem}
+@media(max-width:768px){.footer-grid{grid-template-columns:1fr}}
+.footer-brand .logo-text{font-size:1.1rem;margin-bottom:1rem;display:block;color:white;letter-spacing:.1em}
+.footer-brand p{font-size:.83rem;color:var(--muted2);line-height:1.8;max-width:300px}
+.footer-col h4{font-size:.75rem;font-weight:600;letter-spacing:.15em;text-transform:uppercase;
+               color:var(--muted);margin-bottom:1.2rem}
+.footer-col a{display:block;color:var(--muted2);text-decoration:none;font-size:.83rem;
+              margin-bottom:.7rem;transition:color .2s}
+.footer-col a:hover{color:var(--purple-light)}
+.footer-bottom{max-width:1200px;margin:0 auto;padding-top:2rem;border-top:1px solid var(--border);
+               display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:1rem}
+.footer-bottom p{font-size:.76rem;color:var(--muted2)}
+.footer-bottom a{color:var(--muted2);text-decoration:none;transition:color .2s}
+.footer-bottom a:hover{color:var(--purple-light)}
+
+@media(max-width:768px){
+  .nav-links{display:none}.hamburger{display:flex}
+  .timeline::before{left:60px}.tl-year{width:48px;font-size:.65rem}
+  .footer-grid{grid-template-columns:1fr}
+  .blockquote{padding:1.5rem}
+}
+</style>
+</head>
+<body>
+
+<canvas id="canvas-bg"></canvas>
+
+<!-- NAV -->
+<nav id="navbar">
+  <a class="nav-logo" href="#">
+    <svg class="logo-svg" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <polygon points="20,2 36,11 36,29 20,38 4,29 4,11" fill="none" stroke="#7c3aed" stroke-width="1.2"/>
+      <polygon points="20,8 30,14 30,26 20,32 10,26 10,14" fill="rgba(124,58,237,0.15)" stroke="#a78bfa" stroke-width="0.8"/>
+      <circle cx="20" cy="20" r="4" fill="#7c3aed"/>
+      <line x1="20" y1="2" x2="20" y2="8" stroke="#c4b5fd" stroke-width="0.8"/>
+      <line x1="20" y1="32" x2="20" y2="38" stroke="#c4b5fd" stroke-width="0.8"/>
+      <line x1="4" y1="11" x2="10" y2="14" stroke="#c4b5fd" stroke-width="0.8"/>
+      <line x1="36" y1="11" x2="30" y2="14" stroke="#c4b5fd" stroke-width="0.8"/>
+      <line x1="4" y1="29" x2="10" y2="26" stroke="#c4b5fd" stroke-width="0.8"/>
+      <line x1="36" y1="29" x2="30" y2="26" stroke="#c4b5fd" stroke-width="0.8"/>
+      <circle cx="20" cy="2" r="1.5" fill="#c4b5fd" opacity="0.8"/>
+      <circle cx="36" cy="11" r="1.5" fill="#c4b5fd" opacity="0.8"/>
+      <circle cx="36" cy="29" r="1.5" fill="#c4b5fd" opacity="0.8"/>
+      <circle cx="20" cy="38" r="1.5" fill="#c4b5fd" opacity="0.8"/>
+      <circle cx="4" cy="29" r="1.5" fill="#c4b5fd" opacity="0.8"/>
+      <circle cx="4" cy="11" r="1.5" fill="#c4b5fd" opacity="0.8"/>
+    </svg>
+    <span class="logo-text">CHRONO<span>SEN</span>SIUM</span>
+  </a>
+  <div class="nav-links">
+    <a href="#vision">Vision</a>
+    <a href="#technologie">Technologie</a>
+    <a href="#recherche">Recherche</a>
+    <a href="#fondation">Foundation</a>
+    <a href="#contact" class="nav-cta">Collaborer</a>
+  </div>
+  <div class="hamburger" onclick="this.classList.toggle('open')">
+    <span></span><span></span><span></span>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-eyebrow reveal">
+    <span>Quantum · Matériaux · Énergie · 2026</span>
+  </div>
+  <h1 class="reveal delay-1">
+    <span class="line1">Ingénierie</span>
+    <span class="line2">Souveraine</span>
+    <span class="line3">Augmentée</span>
+  </h1>
+  <p class="hero-sub reveal delay-2">
+    Convergence de la <strong>précision quantique</strong>,
+    des <strong>matériaux de synthèse atomique</strong>
+    et de l'<strong>énergie pérenne</strong> —
+    pour mettre fin à l'ère des monopoles technologiques
+    et inaugurer la Courbe de Moore Quantique.
+  </p>
+  <div class="btn-group reveal delay-3">
+    <a class="btn btn-primary" href="#vision">
+      Découvrir la Vision
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+    </a>
+    <a class="btn btn-ghost" href="#contact">
+      White Paper
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+    </a>
+  </div>
+  <div class="hero-badge reveal delay-4">
+    <div class="hero-badge-label">Record CEA WEST 2025</div>
+    <div class="hero-badge-val">22 min</div>
+    <div class="hero-badge-sub">Plasma continu — record mondial absolu</div>
+  </div>
+  <div class="hero-scroll">
+    <div class="scroll-line"></div>
+    <span>Explorer</span>
+  </div>
+</div>
+
+<!-- STATS -->
+<div class="stats-bar">
+  <div class="stats-grid">
+    <div class="stat-item reveal">
+      <span class="stat-num" data-count="true" data-val="10⁻⁷">10⁻⁷</span>
+      <div class="stat-label">Taux d'erreur qubit<br>Oxford 2025 — Record mondial</div>
+    </div>
+    <div class="stat-item reveal delay-1">
+      <span class="stat-num">$400M</span>
+      <div class="stat-label">Prix d'une machine ASML EUV<br>5 existent dans le monde entier</div>
+    </div>
+    <div class="stat-item reveal delay-2">
+      <span class="stat-num">€5–15M</span>
+      <div class="stat-label">Coût d'une FabCell<br>Accessible à toute région industrielle</div>
+    </div>
+    <div class="stat-item reveal delay-3">
+      <span class="stat-num" data-counter="22">0</span>
+      <span class="stat-num" style="font-size:1.2rem;display:inline">min</span>
+      <div class="stat-label">Plasma continu record<br>CEA WEST — février 2025</div>
+    </div>
+    <div class="stat-item reveal delay-4">
+      <span class="stat-num">2M</span>
+      <div class="stat-label">Emplois cibles France<br>€4 200 net min — 2030–2040</div>
+    </div>
+  </div>
+</div>
+
+<!-- VISION -->
+<div class="section" id="vision">
+<div class="container">
+  <div class="section-label reveal">01 — Le Constat</div>
+  <h2 class="reveal delay-1">Le point de défaillance unique<br>de toute <em>la civilisation</em></h2>
+  <p class="lead reveal delay-2">La Loi de Moore est structurellement terminée au nœud 5nm.
+  Trois acteurs — TSMC, ASML, Samsung — concentrent 100% de la production mondiale de chips avancés
+  dans 5 usines sur deux pays. Une seule machine coûte $400 millions.</p>
+
+  <div class="blockquote reveal delay-3">
+    <p>La Loi de Moore était l'exponentielle de la miniaturisation.
+    La Courbe de Moore Quantique est l'exponentielle de la cohérence.
+    ChronoSenSium est le pont entre les deux — et la transition, c'est maintenant.</p>
+    <cite>— Mathieu Casseri, Fondateur · ChronoSenSium Foundation</cite>
+  </div>
+
+  <div class="section-label reveal" style="margin-top:4rem">02 — La Trajectoire</div>
+  <h2 class="reveal delay-1">Quatre actes,<br><em>une seule direction</em></h2>
+
+  <div class="timeline">
+    <div class="tl-item reveal">
+      <span class="tl-year">2026–28</span>
+      <div class="tl-dot"></div>
+      <div class="tl-content">
+        <h4>FabCells Pilotes — France &amp; Europe</h4>
+        <p>Standard Q-Score ouvert déposé. Partenariats CEA Cadarache, EPFL, Oxford Ionics, IMEC.
+        Preuve de concept matériaux 2D GeS₂. ARR €12M.</p>
+      </div>
+    </div>
+    <div class="tl-item reveal delay-1">
+      <span class="tl-year">2029–32</span>
+      <div class="tl-dot"></div>
+      <div class="tl-content">
+        <h4>Intégration Fusion Compacte</h4>
+        <p>Micro-réacteurs intégrés aux FabCells. Programme Bascule Universelle Global South.
+        ARR €90M — 200 000 emplois filière France à €4 200 net minimum.</p>
+      </div>
+    </div>
+    <div class="tl-item reveal delay-2">
+      <span class="tl-year">2033–36</span>
+      <div class="tl-dot"></div>
+      <div class="tl-content">
+        <h4>Réseau Européen 20+ FabCells</h4>
+        <p>Transmutation plasma PGM. Fin légale des fossiles industriels dans les nations équipées.
+        ARR €450M. Valorisation &gt;€4,5 milliards.</p>
+      </div>
+    </div>
+    <div class="tl-item reveal delay-3">
+      <span class="tl-year">2040–60</span>
+      <div class="tl-dot"></div>
+      <div class="tl-content">
+        <h4>Infrastructure Quantique Distribuée</h4>
+        <p>Énergie souveraine pour 500M+ habitants. Matériaux actifs généralisés.
+        50+ nations équipées. 2 millions d'emplois dignes dans la filière mondiale.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- TECHNOLOGIE -->
+<div class="section section-dark" id="technologie">
+<div class="container">
+  <div class="section-label reveal">03 — Architecture</div>
+  <h2 class="reveal delay-1">Trois piliers.<br><em>Zéro dépendance.</em></h2>
+  <p class="lead reveal delay-2">ChronoSenSium ne remplace pas les Giga-Fabs — elle les contourne.
+  Une FabCell produit ce qu'aucune fonderie conventionnelle ne peut synthétiser.</p>
+
+  <div class="grid-3">
+    <div class="card reveal">
+      <div class="card-icon-wrap">⬡</div>
+      <h3>FabCell</h3>
+      <p>Unité de fabrication atomique distribuée. 500–2 000 m², €5–15M de CAPEX,
+      zéro dépendance EUV. ALD + e-beam sans masque + plasma contrôlé.
+      Produit des composants quantiques et métamatériaux impossibles en Giga-Fab.</p>
+    </div>
+    <div class="card reveal delay-1">
+      <div class="card-icon-wrap">◈</div>
+      <h3>Q-Score Standard</h3>
+      <p>Métrique ouverte de puissance quantique accessible, déposée Apache 2.0.
+      Lisible par tout DSI comme les TFLOPS pour GPU. Standard de facto
+      dont ChronoSenSium est gardienne — jamais privatisé, jamais breveté exclusivement.</p>
+    </div>
+    <div class="card reveal delay-2">
+      <div class="card-icon-wrap">◎</div>
+      <h3>Bascule Universelle</h3>
+      <p>15% des revenus alloués au Global South. Aucune technologie déployée en Occident
+      sans alternative disponible dans les pays en développement.
+      FabCell designs open source transférés à 50+ nations.</p>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- RECHERCHE -->
+<div class="section" id="recherche">
+<div class="container">
+  <div class="section-label reveal">04 — Fondements</div>
+  <h2 class="reveal delay-1">Résultats expérimentaux.<br><em>Peer-reviewed. Reproductibles.</em></h2>
+  <p class="lead reveal delay-2">ChronoSenSium ne spécule pas.
+  Chaque pilier de notre architecture repose sur un résultat publié et vérifiable.</p>
+
+  <div class="breakthrough">
+    <div class="bt-item reveal">
+      <span class="bt-badge">Oxford 2025</span>
+      <div class="bt-content">
+        <strong>Taux d'erreur de porte : 1,5 × 10⁻⁷ — Physical Review Letters</strong>
+        <p>Record mondial absolu. Portes micro-ondes à température ambiante, sans blindage magnétique.
+        Amélioration d'un ordre de grandeur. Rend viable une machine quantique dans une empreinte industrielle classique.</p>
+      </div>
+    </div>
+    <div class="bt-item reveal delay-1">
+      <span class="bt-badge">Purdue 2025</span>
+      <div class="bt-content">
+        <strong>Qubits de spin stables dans GeS₂ à température ambiante</strong>
+        <p>Cohérence ×20 par impulsions micro-ondes. Premier substrat quantique synthétisable
+        sans fonderie dédiée — au cœur de la FabCell ChronoSenSium.</p>
+      </div>
+    </div>
+    <div class="bt-item reveal delay-2">
+      <span class="bt-badge">CEA WEST 2025</span>
+      <div class="bt-content">
+        <strong>22 minutes de plasma continu — Record mondial absolu</strong>
+        <p>Infrastructure plasma directement transférable aux FabCells.
+        70 ans d'expertise française unique au monde — l'avantage structurel de ChronoSenSium.</p>
+      </div>
+    </div>
+    <div class="bt-item reveal delay-3">
+      <span class="bt-badge">IMEC 2025</span>
+      <div class="bt-content">
+        <strong>Transistors MX₂ (WS₂, MoS₂) — IEEE IEDM</strong>
+        <p>Avancées majeures sur le remplacement du silicium. Collaboration TSMC + Intel.
+        Confirme la viabilité industrielle des substrats 2D au cœur des FabCells.</p>
+      </div>
+    </div>
+    <div class="bt-item reveal delay-4">
+      <span class="bt-badge">UBC 2025</span>
+      <div class="bt-content">
+        <strong>Fusion D-D +15% — Réacteur de table Thunderbird</strong>
+        <p>Augmentation par chargement électrochimique. Objectif : amener la fusion
+        hors des grands laboratoires nationaux. Convergence directe avec le modèle FabCell.</p>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- FONDATION -->
+<div class="section section-dark" id="fondation">
+<div class="container">
+  <div class="section-label reveal">05 — Gouvernance</div>
+  <h2 class="reveal delay-1">Une Foundation immunisée<br><em>contre les cycles politiques.</em></h2>
+  <p class="lead reveal delay-2">Mandat statutaire minimum 50 ans. Protocoles core en open source.
+  Co-détention institutionnelle des brevets. Clause Global South obligatoire.
+  Aucune technologie ChronoSenSium ne peut être privatisée ou géopolitiquement contrôlée.</p>
+
+  <div class="blockquote reveal delay-3">
+    <p>Aucun continent sur le carreau. L'énergie souveraine ne peut être déployée
+    en Occident sans qu'une alternative équivalente soit disponible dans les pays en développement.
+    C'est le principe fondateur de la Bascule Universelle.</p>
+  </div>
+
+  <h3 style="font-size:.8rem;font-weight:600;letter-spacing:.15em;text-transform:uppercase;
+             color:var(--muted);margin-top:2.5rem;margin-bottom:1rem" class="reveal">
+    Co-fondateurs institutionnels cibles
+  </h3>
+  <div class="partners-wrap reveal delay-1">
+    <span class="partner-pill">CEA Cadarache</span>
+    <span class="partner-pill">EPFL Lausanne</span>
+    <span class="partner-pill">Oxford Ionics</span>
+    <span class="partner-pill">Fraunhofer Institute</span>
+    <span class="partner-pill">IMEC Leuven</span>
+    <span class="partner-pill">CNRS</span>
+    <span class="partner-pill">IRENA</span>
+    <span class="partner-pill">Commonwealth Fusion Systems</span>
+  </div>
+</div>
+</div>
+
+<!-- CONTACT -->
+<div class="section" id="contact">
+<div class="container">
+  <div class="section-label reveal">06 — Collaborer</div>
+  <h2 class="reveal delay-1">Construisons ensemble<br><em>l'infrastructure.</em></h2>
+  <div class="contact-grid">
+    <div class="contact-info reveal">
+      <h3>Chercheur, industriel,<br>investisseur ?</h3>
+      <p style="margin-top:1rem">Si vous voyez dans ChronoSenSium une convergence avec vos travaux
+      ou vos objectifs — écrivez-nous. Le White Paper complet est disponible sur demande.</p>
+      <p style="margin-top:1rem">Nous répondons à toutes les demandes sérieuses dans les 48 heures.</p>
+      <a class="contact-email" href="mailto:foundation@chronosensiumtechnologies.org">
+        foundation@chronosensiumtechnologies.org
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+        </svg>
+      </a>
+    </div>
+    <div class="reveal delay-2">
+      <form action="https://formspree.io/f/XXXXXXXX" method="POST">
+        <div class="form-group">
+          <label class="form-label">Nom / Institution</label>
+          <input type="text" name="name" placeholder="Dr. Marie Curie — CNRS" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email</label>
+          <input type="email" name="_replyto" placeholder="contact@institution.fr" required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Sujet</label>
+          <input type="text" name="subject" placeholder="Recherche / Partenariat / Investissement">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Message</label>
+          <textarea name="message" placeholder="Décrivez votre proposition ou question..."></textarea>
+        </div>
+        <button class="btn btn-primary" type="submit" style="width:100%;justify-content:center">
+          Envoyer le message
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" width="16" height="16">
+            <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+          </svg>
+        </button>
+      </form>
+    </div>
+  </div>
+</div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <span class="logo-text">⬡ CHRONOSENSIUM</span>
+      <p>La couche d'infrastructure de la prochaine civilisation.
+      Ingénierie souveraine augmentée — au service de toute l'humanité.</p>
+    </div>
+    <div class="footer-col">
+      <h4>Navigation</h4>
+      <a href="#vision">Vision</a>
+      <a href="#technologie">Technologie</a>
+      <a href="#recherche">Recherche</a>
+      <a href="#fondation">Foundation</a>
+    </div>
+    <div class="footer-col">
+      <h4>Contact</h4>
+      <a href="mailto:foundation@chronosensiumtechnologies.org">Foundation</a>
+      <a href="https://github.com/chronosensium">GitHub</a>
+      <a href="#contact">White Paper</a>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2026 ChronoSenSium Technologies Foundation — Clamart, Île-de-France</p>
+    <p>
+      <a href="https://creativecommons.org/licenses/by/4.0/">CC-BY 4.0</a>
+      &nbsp;·&nbsp;
+      <a href="https://github.com/chronosensium/chronosensium">Code CC0 Open Source</a>
+    </p>
+  </div>
+</footer>
+
+<script>
+// ── CANVAS PARTICLES ──
+const canvas = document.getElementById('canvas-bg');
+const ctx = canvas.getContext('2d');
+let W, H, particles = [];
+
+function resize(){
+  W = canvas.width = window.innerWidth;
+  H = canvas.height = window.innerHeight;
+}
+resize();
+window.addEventListener('resize', resize);
+
+class Particle {
+  constructor(){this.reset()}
+  reset(){
+    this.x = Math.random()*W;
+    this.y = Math.random()*H;
+    this.vx = (Math.random()-.5)*.3;
+    this.vy = (Math.random()-.5)*.3;
+    this.r = Math.random()*1.5+.5;
+    this.alpha = Math.random()*.5+.1;
+  }
+  update(){
+    this.x += this.vx; this.y += this.vy;
+    if(this.x<0||this.x>W||this.y<0||this.y>H) this.reset();
+  }
+  draw(){
+    ctx.beginPath();
+    ctx.arc(this.x,this.y,this.r,0,Math.PI*2);
+    ctx.fillStyle = `rgba(124,58,237,${this.alpha})`;
+    ctx.fill();
+  }
+}
+
+for(let i=0;i<120;i++) particles.push(new Particle());
+
+function drawConnections(){
+  particles.forEach((a,i)=>{
+    particles.slice(i+1).forEach(b=>{
+      const d = Math.hypot(a.x-b.x,a.y-b.y);
+      if(d<120){
+        ctx.beginPath();
+        ctx.moveTo(a.x,a.y);
+        ctx.lineTo(b.x,b.y);
+        ctx.strokeStyle = `rgba(124,58,237,${.15*(1-d/120)})`;
+        ctx.lineWidth = .5;
+        ctx.stroke();
+      }
+    });
+  });
+}
+
+function animate(){
+  ctx.clearRect(0,0,W,H);
+  particles.forEach(p=>{p.update();p.draw()});
+  drawConnections();
+  requestAnimationFrame(animate);
+}
+animate();
+
+// ── NAVBAR SCROLL ──
+const navbar = document.getElementById('navbar');
+window.addEventListener('scroll',()=>{
+  navbar.classList.toggle('scrolled', window.scrollY > 60);
+});
+
+// ── SCROLL REVEAL ──
+const observer = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting) e.target.classList.add('visible');
+  });
+},{threshold:.12});
+
+document.querySelectorAll('.reveal,.reveal-left,.reveal-right').forEach(el=>observer.observe(el));
+
+// ── COUNTER ANIMATION ──
+const counterObserver = new IntersectionObserver((entries)=>{
+  entries.forEach(e=>{
+    if(e.isIntersecting && !e.target.dataset.done){
+      e.target.dataset.done = '1';
+      const target = parseInt(e.target.dataset.counter);
+      let current = 0;
+      const step = target/60;
+      const timer = setInterval(()=>{
+        current = Math.min(current+step, target);
+        e.target.textContent = Math.round(current);
+        if(current >= target) clearInterval(timer);
+      },16);
+    }
+  });
+},{threshold:.5});
+
+document.querySelectorAll('[data-counter]').forEach(el=>counterObserver.observe(el));
+
+// ── SMOOTH ACTIVE NAV ──
+const sections = document.querySelectorAll('div[id],section[id]');
+const navLinks = document.querySelectorAll('.nav-links a[href^="#"]');
+window.addEventListener('scroll',()=>{
+  let current = '';
+  sections.forEach(s=>{
+    if(window.scrollY >= s.offsetTop - 120) current = s.id;
+  });
+  navLinks.forEach(a=>{
+    a.style.color = a.getAttribute('href') === '#'+current ? 'white' : '';
+  });
+});
+</script>
+
+</body>
+</html>
