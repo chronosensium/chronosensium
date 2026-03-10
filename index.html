@@ -4,67 +4,266 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>ChronoSenSium — Ingénierie Souveraine Augmentée</title>
-<meta name="description" content="La couche d'infrastructure de la prochaine civilisation. Convergence quantique, matériaux de synthèse et énergie pérenne.">
-<meta name="robots" content="index, follow">
-<meta name="theme-color" content="#7c3aed">
-<meta property="og:title" content="ChronoSenSium — Ingénierie Souveraine Augmentée">
-<meta property="og:description" content="La couche d'infrastructure de la prochaine civilisation.">
-<meta property="og:type" content="website">
+<meta name="description" content="La couche d'infrastructure de la prochaine civilisation.">
 <meta http-equiv="X-Frame-Options" content="DENY">
 <meta http-equiv="X-Content-Type-Options" content="nosniff">
-<meta http-equiv="Referrer-Policy" content="strict-origin-when-cross-origin">
-<meta http-equiv="Permissions-Policy" content="camera=(), microphone=(), geolocation=()">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Playfair+Display:ital,wght@0,700;1,400&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="style.css">
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"Organization","name":"ChronoSenSium Foundation","url":"https://chronosensiumtechnologies.com","founder":{"@type":"Person","name":"Mathieu Casseri"},"foundingDate":"2026","addressCountry":"FR"}
-</script>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+:root{--p:#7c3aed;--pl:#a78bfa;--pd:#4c1d95;--bg:#06060f;--sf:#0d0d1a;--bd:#1a1a30;--tx:#e0e0f0;--mt:#7070a0;--mt2:#4a4a70;--gn:#22c55e;--cy:#06b6d4;--rd:#f87171;--fs:'Inter',sans-serif;--fm:'Playfair Display',serif;--fc:'JetBrains Mono',monospace}
+html{scroll-behavior:smooth;overflow-x:hidden}
+body{font-family:var(--fs);background:var(--bg);color:var(--tx);overflow-x:hidden;cursor:none;-webkit-font-smoothing:antialiased}
+@media(hover:none){body{cursor:auto}}
+::selection{background:var(--p);color:#fff}
+a{color:inherit;text-decoration:none}
+button{font-family:var(--fs);cursor:pointer;border:none;background:none}
+
+#loader{position:fixed;inset:0;z-index:9999;background:#03030a;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2rem;transition:opacity .7s ease}
+#loader.out{opacity:0;pointer-events:none}
+.ld-svg{animation:spin 3s linear infinite}
+.ld-svg-inner{animation:spin 2s linear infinite reverse;transform-origin:20px 20px}
+@keyframes spin{to{transform:rotate(360deg)}}
+.ld-name{font-family:var(--fc);font-size:.9rem;letter-spacing:.35em;color:#fff;text-transform:uppercase}
+.ld-sub{font-size:.65rem;color:var(--mt);letter-spacing:.15em;text-transform:uppercase;margin-top:-.5rem}
+.ld-track{width:200px;height:1px;background:#1a1a30;border-radius:1px;overflow:hidden}
+.ld-fill{height:100%;width:0;background:linear-gradient(90deg,var(--p),var(--pl))}
+
+#cur{width:6px;height:6px;background:var(--pl);border-radius:50%;position:fixed;pointer-events:none;z-index:9998;transform:translate(-50%,-50%);transition:width .2s,height .2s}
+#cur-ring{width:26px;height:26px;border:1px solid rgba(167,139,250,.4);border-radius:50%;position:fixed;pointer-events:none;z-index:9997;transform:translate(-50%,-50%);transition:width .25s,height .25s}
+#cur.hov{width:10px;height:10px;background:#fff}
+#cur-ring.hov{width:40px;height:40px;border-color:rgba(167,139,250,.7)}
+@media(hover:none){#cur,#cur-ring{display:none}}
+
+#cvs{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.4}
+
+header{position:fixed;top:0;left:0;right:0;z-index:1000;padding:1.1rem 5%;display:flex;align-items:center;justify-content:space-between;transition:all .4s}
+header.scrolled{background:rgba(3,3,10,.97);backdrop-filter:blur(24px);border-bottom:1px solid var(--bd);padding:.8rem 5%}
+.nav-logo{display:flex;align-items:center;gap:12px}
+.nav-logo svg{transition:transform .5s}
+.nav-logo:hover svg{transform:rotate(60deg)}
+.nav-brand{font-family:var(--fc);font-size:.82rem;letter-spacing:.18em;color:#fff;text-transform:uppercase}
+.nav-brand em{color:var(--pl);font-style:normal}
+.nav-links{display:flex;gap:2rem}
+.nav-links a{font-size:.74rem;font-weight:500;letter-spacing:.07em;text-transform:uppercase;color:var(--mt);transition:color .2s;position:relative;padding:.2rem 0}
+.nav-links a::after{content:'';position:absolute;bottom:0;left:0;right:0;height:1px;background:var(--pl);transform:scaleX(0);transform-origin:left;transition:transform .3s}
+.nav-links a:hover,.nav-links a.active{color:#fff}
+.nav-links a:hover::after,.nav-links a.active::after{transform:scaleX(1)}
+.nav-cta{font-family:var(--fc);font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;padding:8px 20px;border-radius:10px;background:var(--p);color:#fff;border:1px solid var(--p);transition:all .3s}
+.nav-cta:hover{background:var(--pl);transform:translateY(-2px)}
+.hamburger{display:none;flex-direction:column;gap:5px;padding:4px}
+.hamburger span{width:22px;height:1.5px;background:var(--tx);border-radius:2px;display:block;transition:all .3s}
+.mob-nav{display:none;position:fixed;inset:0;z-index:999;background:rgba(3,3,10,.98);backdrop-filter:blur(20px);flex-direction:column;align-items:center;justify-content:center;gap:2.5rem}
+.mob-nav.open{display:flex}
+.mob-nav a{font-family:var(--fc);font-size:1.1rem;letter-spacing:.12em;text-transform:uppercase;color:var(--tx);transition:color .2s}
+.mob-nav a:hover{color:var(--pl)}
+
+.hero{position:relative;z-index:1;min-height:100vh;display:flex;align-items:center;padding:150px 5% 100px;overflow:hidden}
+.hero-inner{max-width:660px}
+.hero-tag{display:inline-flex;align-items:center;gap:9px;background:rgba(124,58,237,.1);border:1px solid rgba(124,58,237,.22);padding:6px 16px;border-radius:100px;margin-bottom:2rem;font-family:var(--fc);font-size:.68rem;letter-spacing:.12em;color:var(--pl);text-transform:uppercase}
+.hero-tag-dot{width:6px;height:6px;border-radius:50%;background:var(--pl);animation:pulse 2s ease-in-out infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:.3;transform:scale(1.6)}}
+h1{font-family:var(--fm);font-size:clamp(3rem,9vw,6.5rem);line-height:.96;margin-bottom:2rem}
+.h1a{display:block;color:#fff}
+.h1b{display:block;background:linear-gradient(135deg,#c4b5fd 0%,#7c3aed 45%,#a78bfa 100%);background-size:300% 300%;-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;animation:hg 5s ease infinite}
+@keyframes hg{0%,100%{background-position:0% 50%}50%{background-position:100% 50%}}
+.h1c{display:block;color:var(--mt);font-style:italic;font-weight:400;font-size:.72em}
+.hero-desc{font-size:clamp(.95rem,1.4vw,1.1rem);color:var(--mt);line-height:1.95;margin-bottom:2.8rem;font-weight:300}
+.hero-desc strong{color:var(--pl);font-weight:500}
+.hero-btns{display:flex;gap:1rem;flex-wrap:wrap;margin-bottom:3.5rem}
+.hero-metrics{display:flex;gap:2.5rem;flex-wrap:wrap;padding-top:2.5rem;border-top:1px solid var(--bd)}
+.hm-val{font-family:var(--fm);font-size:1.75rem;font-weight:700;color:#fff;display:block;line-height:1}
+.hm-lbl{font-size:.7rem;color:var(--mt);line-height:1.55;margin-top:.3rem}
+.hero-floats{position:absolute;right:4%;top:50%;transform:translateY(-50%);display:none;flex-direction:column;gap:1rem;width:230px}
+@media(min-width:1300px){.hero-floats{display:flex}}
+.hf{background:rgba(13,13,26,.92);border:1px solid var(--bd);border-radius:12px;padding:1.1rem 1.4rem;backdrop-filter:blur(14px);animation:hfl 4s ease-in-out infinite}
+.hf:nth-child(2){animation-delay:.7s}.hf:nth-child(3){animation-delay:1.4s}
+@keyframes hfl{0%,100%{transform:translateY(0)}50%{transform:translateY(-10px)}}
+.hf-l{font-family:var(--fc);font-size:.6rem;color:var(--mt);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.4rem}
+.hf-v{font-family:var(--fm);font-size:1.3rem;font-weight:700;color:#fff}
+.hf-s{font-size:.7rem;color:var(--pl);margin-top:.3rem}
+.scroll-cue{position:absolute;bottom:2rem;left:50%;transform:translateX(-50%);display:flex;flex-direction:column;align-items:center;gap:.5rem;font-family:var(--fc);font-size:.6rem;color:var(--mt2);letter-spacing:.18em;text-transform:uppercase;animation:sc 3s ease-in-out infinite}
+@keyframes sc{0%,100%{transform:translateX(-50%) translateY(0)}50%{transform:translateX(-50%) translateY(-7px)}}
+.sc-line{width:1px;height:30px;background:linear-gradient(to bottom,var(--p),transparent)}
+
+.ticker-wrap{position:relative;z-index:1;overflow:hidden;background:rgba(124,58,237,.07);border-top:1px solid rgba(124,58,237,.14);border-bottom:1px solid rgba(124,58,237,.14);padding:.75rem 0}
+.ticker{display:flex;gap:3.5rem;white-space:nowrap;animation:tick 28s linear infinite}
+.ticker:hover{animation-play-state:paused}
+@keyframes tick{from{transform:translateX(0)}to{transform:translateX(-50%)}}
+.ticker span{font-family:var(--fc);font-size:.68rem;color:var(--mt);letter-spacing:.08em;text-transform:uppercase;flex-shrink:0}
+
+.stats-bar{position:relative;z-index:1;padding:65px 5%;background:linear-gradient(135deg,rgba(124,58,237,.09),rgba(76,29,149,.05))}
+.stats-grid{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:repeat(auto-fit,minmax(155px,1fr));gap:2rem}
+.stat{text-align:center;padding:1rem}
+.stat-n{font-family:var(--fm);font-size:2.3rem;font-weight:700;background:linear-gradient(135deg,#c4b5fd,#7c3aed);-webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;display:block;line-height:1;margin-bottom:.4rem}
+.stat-l{font-size:.71rem;color:var(--mt);line-height:1.65}
+
+.sec{position:relative;z-index:1;padding:110px 5%}
+.sec-dark{background:rgba(0,0,0,.48);border-top:1px solid var(--bd);border-bottom:1px solid var(--bd)}
+.wrap{max-width:1200px;margin:0 auto}
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:4rem;align-items:start}
+@media(max-width:960px){.two-col{grid-template-columns:1fr;gap:2.5rem}}
+.eyebrow{font-family:var(--fc);font-size:.65rem;font-weight:600;letter-spacing:.22em;text-transform:uppercase;color:var(--p);margin-bottom:1.1rem}
+h2{font-family:var(--fm);font-size:clamp(1.75rem,3.8vw,2.7rem);color:#fff;margin-bottom:1.4rem;line-height:1.1}
+h2 em{font-style:italic;color:var(--pl)}
+.lead{font-size:1rem;color:var(--mt);line-height:2;max-width:650px;font-weight:300;margin-bottom:2.5rem}
+.rv{opacity:0;transform:translateY(26px);transition:opacity .75s ease,transform .75s ease}
+.rv.on{opacity:1;transform:translateY(0)}
+.d1{transition-delay:.1s}.d2{transition-delay:.2s}.d3{transition-delay:.3s}.d4{transition-delay:.4s}
+
+.btn{display:inline-flex;align-items:center;gap:8px;padding:13px 26px;border-radius:10px;font-size:.86rem;font-weight:600;transition:all .3s;border:none;cursor:pointer;font-family:var(--fs)}
+.btn svg{transition:transform .3s;flex-shrink:0}
+.btn:hover svg{transform:translateX(4px)}
+.btn-p{background:linear-gradient(135deg,var(--p),#9333ea);color:#fff;box-shadow:0 4px 28px rgba(124,58,237,.38)}
+.btn-p:hover{transform:translateY(-3px);box-shadow:0 10px 38px rgba(124,58,237,.55)}
+.btn-g{background:transparent;color:var(--pl);border:1px solid rgba(124,58,237,.32)}
+.btn-g:hover{background:rgba(124,58,237,.08);border-color:var(--p);transform:translateY(-2px)}
+
+.bq{margin:2.8rem 0;padding:2rem 2.5rem;background:linear-gradient(135deg,rgba(124,58,237,.06),transparent 80%);border-left:2px solid var(--p);border-radius:0 16px 16px 0;position:relative}
+.bq::before{content:'"';position:absolute;top:-1rem;left:1.2rem;font-family:var(--fm);font-size:4rem;color:var(--p);opacity:.2;line-height:1}
+.bq p{font-family:var(--fm);font-size:1.1rem;font-style:italic;color:var(--pl);line-height:1.95;max-width:740px}
+.bq cite{display:block;margin-top:.8rem;font-family:var(--fc);font-size:.65rem;color:var(--mt);font-style:normal;letter-spacing:.08em;text-transform:uppercase}
+
+.tl{position:relative;padding-left:130px;margin-top:2.5rem}
+.tl::before{content:'';position:absolute;left:104px;top:10px;bottom:10px;width:1px;background:linear-gradient(to bottom,var(--p),rgba(124,58,237,.08))}
+.tl-row{display:flex;gap:2rem;margin-bottom:2rem;align-items:flex-start;position:relative;margin-left:-130px;padding-left:130px}
+.tl-yr{position:absolute;left:0;width:90px;text-align:right;font-family:var(--fc);font-size:.66rem;font-weight:600;color:var(--pl);padding-top:3px}
+.tl-dot{position:absolute;left:97px;top:4px;width:14px;height:14px;border-radius:50%;border:2px solid var(--p);background:var(--bg);z-index:1;transition:all .4s}
+.tl-row:hover .tl-dot{background:var(--p);box-shadow:0 0 16px var(--p)}
+.tl-body h4{font-size:.9rem;font-weight:600;color:#fff;margin-bottom:.3rem}
+.tl-body p{font-size:.82rem;color:var(--mt);line-height:1.85}
+
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(270px,1fr));gap:1.4rem;margin-top:2.5rem}
+.card{background:var(--sf);border:1px solid var(--bd);border-radius:16px;padding:2.2rem;transition:all .4s;position:relative;overflow:hidden}
+.card::before{content:'';position:absolute;top:0;left:0;right:0;height:1px;background:linear-gradient(90deg,transparent,var(--p),transparent);opacity:0;transition:opacity .4s}
+.card:hover{border-color:rgba(124,58,237,.35);transform:translateY(-5px);box-shadow:0 20px 60px rgba(124,58,237,.14)}
+.card:hover::before{opacity:1}
+.card-ico{width:46px;height:46px;border-radius:12px;display:flex;align-items:center;justify-content:center;margin-bottom:1.3rem;font-size:1.2rem;background:linear-gradient(135deg,rgba(124,58,237,.18),rgba(124,58,237,.04));border:1px solid rgba(124,58,237,.18)}
+.card h3{font-size:.98rem;font-weight:600;color:#fff;margin-bottom:.65rem}
+.card p{font-size:.85rem;color:var(--mt);line-height:1.85}
+.card-tag{display:inline-flex;margin-top:1rem;font-family:var(--fc);font-size:.62rem;color:var(--pl);letter-spacing:.07em;text-transform:uppercase;background:rgba(124,58,237,.1);border:1px solid rgba(124,58,237,.18);padding:3px 10px;border-radius:100px}
+
+.nda-box{margin-top:2.5rem;padding:1.8rem 2.2rem;background:linear-gradient(135deg,rgba(124,58,237,.08),rgba(76,29,149,.04));border:1px solid rgba(124,58,237,.18);border-radius:16px;display:flex;gap:1.4rem;align-items:center}
+.nda-ico{flex-shrink:0;width:46px;height:46px;border-radius:12px;background:rgba(124,58,237,.14);border:1px solid rgba(124,58,237,.28);display:flex;align-items:center;justify-content:center;font-size:1.2rem}
+.nda-box h4{font-size:.88rem;font-weight:600;color:#fff;margin-bottom:.3rem}
+.nda-box p{font-size:.82rem;color:var(--mt);line-height:1.7}
+.nda-box a{color:var(--pl);transition:color .2s}.nda-box a:hover{color:#fff}
+@media(max-width:640px){.nda-box{flex-direction:column;text-align:center}}
+
+.bt-list{display:flex;flex-direction:column;gap:.75rem;margin-top:2.2rem}
+.bt{display:flex;gap:1.3rem;padding:1.5rem;background:var(--sf);border:1px solid var(--bd);border-radius:12px;transition:all .3s;align-items:flex-start;position:relative;overflow:hidden}
+.bt::after{content:'';position:absolute;left:0;top:0;bottom:0;width:2px;background:linear-gradient(to bottom,var(--p),var(--pl));opacity:0;transition:opacity .3s}
+.bt:hover{border-color:rgba(124,58,237,.28);background:rgba(124,58,237,.03)}
+.bt:hover::after{opacity:1}
+.bt-badge{flex-shrink:0;background:rgba(124,58,237,.11);border:1px solid rgba(124,58,237,.22);color:var(--pl);padding:3px 10px;border-radius:100px;font-family:var(--fc);font-size:.61rem;font-weight:500;letter-spacing:.07em;white-space:nowrap;margin-top:2px}
+.bt strong{display:block;color:#fff;font-size:.86rem;margin-bottom:.3rem;font-weight:600}
+.bt p{font-size:.81rem;color:var(--mt);line-height:1.8;margin:0}
+
+.mani-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.3rem;margin-top:2.5rem}
+@media(max-width:768px){.mani-grid{grid-template-columns:1fr}}
+.mani{padding:1.8rem 2rem;background:#111122;border:1px solid var(--bd);border-radius:12px;transition:all .3s}
+.mani:hover{border-color:rgba(124,58,237,.28);transform:translateY(-3px)}
+.mani-n{font-family:var(--fc);font-size:.58rem;font-weight:700;letter-spacing:.2em;color:var(--p);text-transform:uppercase;margin-bottom:.7rem}
+.mani h4{font-size:.93rem;font-weight:600;color:#fff;margin-bottom:.55rem;line-height:1.45}
+.mani p{font-size:.82rem;color:var(--mt);line-height:1.85}
+
+.term{background:#03030a;border:1px solid #222240;border-radius:12px;overflow:hidden}
+.term-bar{background:var(--sf);padding:.65rem 1.1rem;display:flex;gap:.45rem;align-items:center;border-bottom:1px solid var(--bd)}
+.td{width:10px;height:10px;border-radius:50%;flex-shrink:0}
+.td.r{background:#ff5f57}.td.y{background:#febc2e}.td.g{background:#28c840}
+.term-title{font-family:var(--fc);font-size:.64rem;color:var(--mt);margin-left:auto;letter-spacing:.05em}
+.term-body{padding:1.3rem 1.5rem;font-family:var(--fc);font-size:.76rem;color:#b0b0cc;line-height:2}
+.tc{color:var(--mt2)}.tp{color:var(--pl)}.tw{color:#fff}.tg{color:var(--gn)}.tr{color:var(--rd)}.tb{color:var(--cy)}
+
+.pills{display:flex;flex-wrap:wrap;gap:.65rem;margin-top:1.5rem}
+.pill{padding:6px 16px;border:1px solid var(--bd);border-radius:100px;font-size:.75rem;color:var(--mt);font-weight:500;transition:all .3s;cursor:default}
+.pill:hover{border-color:var(--p);color:var(--pl);background:rgba(124,58,237,.06);transform:translateY(-2px)}
+
+.founder{display:flex;gap:2.2rem;align-items:center;margin-top:2.5rem;background:var(--sf);border:1px solid var(--bd);border-radius:16px;padding:2.2rem;max-width:720px;transition:border-color .3s,box-shadow .3s}
+.founder:hover{border-color:rgba(124,58,237,.38);box-shadow:0 20px 60px rgba(124,58,237,.12)}
+.founder-av{flex-shrink:0;width:76px;height:76px;border-radius:50%;background:linear-gradient(135deg,var(--pd),var(--p));display:flex;align-items:center;justify-content:center;font-family:var(--fm);font-size:1.5rem;font-weight:700;color:#fff;border:2px solid rgba(124,58,237,.45);box-shadow:0 0 24px rgba(124,58,237,.3)}
+.founder-info h4{font-size:1.05rem;font-weight:600;color:#fff;margin-bottom:.25rem}
+.founder-role{font-family:var(--fc);font-size:.7rem;color:var(--pl);letter-spacing:.06em;text-transform:uppercase;margin-bottom:.7rem}
+.founder-info p{font-size:.84rem;color:var(--mt);line-height:1.85}
+@media(max-width:600px){.founder{flex-direction:column;text-align:center}}
+
+.faq-list{display:flex;flex-direction:column;gap:.55rem;margin-top:2.2rem}
+.faq-item{background:var(--sf);border:1px solid var(--bd);border-radius:12px;overflow:hidden}
+.faq-q{width:100%;padding:1.3rem 1.7rem;display:flex;justify-content:space-between;align-items:center;gap:1rem;transition:background .2s;text-align:left;cursor:pointer}
+.faq-q:hover{background:rgba(124,58,237,.04)}
+.faq-q span:first-child{font-size:.89rem;font-weight:500;color:#fff;line-height:1.45;flex:1}
+.faq-ico{flex-shrink:0;width:20px;height:20px;border:1px solid rgba(124,58,237,.28);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--pl);font-size:.75rem;transition:all .3s}
+.faq-item.open .faq-ico{transform:rotate(45deg);background:var(--p);border-color:var(--p);color:#fff}
+.faq-body{max-height:0;overflow:hidden;transition:max-height .4s ease}
+.faq-item.open .faq-body{max-height:400px}
+.faq-body p{padding:.1rem 1.7rem 1.4rem;font-size:.84rem;color:var(--mt);line-height:1.9}
+
+.contact-grid{display:grid;grid-template-columns:1fr 1fr;gap:5rem;margin-top:2.5rem}
+@media(max-width:768px){.contact-grid{grid-template-columns:1fr;gap:2rem}}
+.contact-grid h3{font-family:var(--fm);font-size:1.2rem;color:#fff;margin-bottom:1rem}
+.contact-grid p{font-size:.88rem;color:var(--mt);line-height:1.95}
+.contact-link{display:inline-flex;align-items:center;gap:8px;margin-top:1.4rem;font-size:.87rem;color:var(--pl);font-weight:500;transition:gap .3s}
+.contact-link:hover{gap:14px}
+.cstatus{display:inline-flex;align-items:center;gap:7px;margin-top:1rem;background:rgba(34,197,94,.07);border:1px solid rgba(34,197,94,.18);padding:5px 13px;border-radius:100px;font-family:var(--fc);font-size:.62rem;color:#86efac;letter-spacing:.07em}
+.cstatus span{width:5px;height:5px;border-radius:50%;background:var(--gn);animation:pulse 2s infinite;flex-shrink:0}
+.field{margin-bottom:.9rem}
+.field label{display:block;font-family:var(--fc);font-size:.63rem;font-weight:500;color:var(--mt);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.45rem}
+.field input,.field textarea{width:100%;background:rgba(13,13,26,.9);border:1px solid var(--bd);color:var(--tx);padding:12px 14px;border-radius:10px;font-size:.86rem;font-family:var(--fs);transition:all .3s}
+.field input::placeholder,.field textarea::placeholder{color:var(--mt2)}
+.field input:focus,.field textarea:focus{outline:none;border-color:var(--p);background:rgba(124,58,237,.04);box-shadow:0 0 0 3px rgba(124,58,237,.08)}
+.field textarea{height:112px;resize:vertical}
+#fmsg{padding:.8rem 1rem;border-radius:10px;font-size:.82rem;margin-bottom:.8rem;display:none}
+#fmsg.ok{background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.2);color:#86efac}
+#fmsg.err{background:rgba(248,113,113,.1);border:1px solid rgba(248,113,113,.2);color:#fca5a5}
+
+footer{position:relative;z-index:1;background:rgba(2,2,8,.92);border-top:1px solid var(--bd);padding:4rem 5% 2rem}
+.footer-in{max-width:1200px;margin:0 auto;display:grid;grid-template-columns:2.2fr 1fr 1fr 1fr;gap:2.5rem;margin-bottom:3rem}
+@media(max-width:768px){.footer-in{grid-template-columns:1fr}}
+.footer-logo{font-family:var(--fc);font-size:.88rem;letter-spacing:.16em;color:#fff;text-transform:uppercase;margin-bottom:1rem}
+.footer-logo em{color:var(--pl);font-style:normal}
+.footer-brand p{font-size:.78rem;color:var(--mt2);line-height:1.9;max-width:270px}
+.footer-sec{margin-top:1rem;font-family:var(--fc);font-size:.62rem;color:var(--mt2)}
+.footer-col h5{font-family:var(--fc);font-size:.63rem;font-weight:600;letter-spacing:.17em;text-transform:uppercase;color:var(--mt);margin-bottom:1.2rem}
+.footer-col a{display:block;font-size:.79rem;color:var(--mt2);margin-bottom:.6rem;transition:color .2s}
+.footer-col a:hover{color:var(--pl)}
+.footer-bottom{max-width:1200px;margin:0 auto;padding-top:1.8rem;border-top:1px solid var(--bd);display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:.8rem}
+.footer-bottom p{font-family:var(--fc);font-size:.63rem;color:var(--mt2);line-height:1.8}
+.footer-bottom a{color:var(--mt2);transition:color .2s}.footer-bottom a:hover{color:var(--pl)}
+@media(max-width:1024px){.nav-links{display:none}.hamburger{display:flex}}
+@media(max-width:768px){.tl{padding-left:80px}.tl::before{left:64px}.tl-dot{left:57px}.tl-yr{width:50px;font-size:.6rem}.bq{padding:1.5rem 1.7rem}}
+@media(prefers-reduced-motion:reduce){*{animation-duration:.01ms!important;transition-duration:.01ms!important}.rv{opacity:1;transform:none}}
+</style>
 </head>
 <body>
 
-<!-- LOADER -->
-<div id="loader" role="status" aria-label="Chargement">
-  <div class="ld-hex">
-    <svg width="72" height="72" viewBox="0 0 40 40" fill="none">
-      <polygon class="hex-outer" points="20,1 37,10.5 37,29.5 20,39 3,29.5 3,10.5" fill="none" stroke="#7c3aed" stroke-width="1"/>
-      <polygon class="hex-inner" points="20,7 31,13.5 31,26.5 20,33 9,26.5 9,13.5" fill="rgba(124,58,237,.15)" stroke="#a78bfa" stroke-width=".8"/>
-      <circle cx="20" cy="20" r="3.5" fill="#7c3aed"/>
-    </svg>
-  </div>
+<div id="loader">
+  <svg width="72" height="72" viewBox="0 0 40 40" fill="none" class="ld-svg">
+    <polygon points="20,1 37,10.5 37,29.5 20,39 3,29.5 3,10.5" fill="none" stroke="#7c3aed" stroke-width="1"/>
+    <polygon class="ld-svg-inner" points="20,7 31,13.5 31,26.5 20,33 9,26.5 9,13.5" fill="rgba(124,58,237,.15)" stroke="#a78bfa" stroke-width=".8"/>
+    <circle cx="20" cy="20" r="3.5" fill="#7c3aed"/>
+  </svg>
   <div class="ld-name">ChronoSenSium</div>
   <div class="ld-sub">Ingénierie Souveraine Augmentée</div>
-  <div class="ld-bar-wrap"><div class="ld-bar" id="lbar"></div></div>
-  <div class="ld-pct" id="lpct">0%</div>
+  <div class="ld-track"><div class="ld-fill" id="lbar"></div></div>
 </div>
 
-<!-- CURSOR -->
-<div id="cur" aria-hidden="true"></div>
-<div id="cur-ring" aria-hidden="true"></div>
+<div id="cur"></div>
+<div id="cur-ring"></div>
+<canvas id="cvs"></canvas>
 
-<!-- CANVAS -->
-<canvas id="cvs" aria-hidden="true"></canvas>
-
-<!-- MOBILE MENU -->
-<div class="mob-nav" id="mob" role="dialog" aria-modal="true" aria-label="Menu navigation">
-  <button class="mob-close" onclick="closeMob()" aria-label="Fermer">✕</button>
-  <nav>
-    <a href="#vision" onclick="closeMob()">Vision</a>
-    <a href="#technologie" onclick="closeMob()">Technologie</a>
-    <a href="#recherche" onclick="closeMob()">Recherche</a>
-    <a href="#manifeste" onclick="closeMob()">Manifeste</a>
-    <a href="#fondation" onclick="closeMob()">Foundation</a>
-    <a href="#fondateur" onclick="closeMob()">Fondateur</a>
-    <a href="#faq" onclick="closeMob()">FAQ</a>
-    <a href="#contact" onclick="closeMob()" class="mob-cta">Collaborer →</a>
-  </nav>
+<div class="mob-nav" id="mob">
+  <a href="#vision" onclick="closeMob()">Vision</a>
+  <a href="#technologie" onclick="closeMob()">Technologie</a>
+  <a href="#recherche" onclick="closeMob()">Recherche</a>
+  <a href="#manifeste" onclick="closeMob()">Manifeste</a>
+  <a href="#fondation" onclick="closeMob()">Foundation</a>
+  <a href="#fondateur" onclick="closeMob()">Fondateur</a>
+  <a href="#faq" onclick="closeMob()">FAQ</a>
+  <a href="#contact" onclick="closeMob()" style="color:var(--pl)">Collaborer →</a>
 </div>
 
-<!-- NAVBAR -->
-<header id="navbar" role="banner">
-  <a href="#" class="nav-logo" aria-label="ChronoSenSium — Accueil">
-    <svg width="34" height="34" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+<header id="navbar">
+  <a href="#" class="nav-logo">
+    <svg width="34" height="34" viewBox="0 0 40 40" fill="none">
       <polygon points="20,2 36,11 36,29 20,38 4,29 4,11" fill="none" stroke="#7c3aed" stroke-width="1.2"/>
       <polygon points="20,8 30,14 30,26 20,32 10,26 10,14" fill="rgba(124,58,237,.15)" stroke="#a78bfa" stroke-width=".8"/>
       <circle cx="20" cy="20" r="3.5" fill="#7c3aed"/>
@@ -74,7 +273,7 @@
     </svg>
     <span class="nav-brand">CHRONO<em>SEN</em>SIUM</span>
   </a>
-  <nav class="nav-links" aria-label="Navigation principale">
+  <nav class="nav-links">
     <a href="#vision">Vision</a>
     <a href="#technologie">Technologie</a>
     <a href="#recherche">Recherche</a>
@@ -82,212 +281,116 @@
     <a href="#fondation">Foundation</a>
     <a href="#fondateur">Fondateur</a>
   </nav>
-  <div class="nav-right">
+  <div style="display:flex;align-items:center;gap:1rem">
     <a href="#contact" class="nav-cta">Collaborer</a>
-    <button class="hamburger" id="ham" onclick="toggleMob()" aria-label="Ouvrir le menu" aria-expanded="false">
+    <button class="hamburger" id="ham" onclick="toggleMob()">
       <span></span><span></span><span></span>
     </button>
   </div>
 </header>
 
-<!-- HERO -->
-<section class="hero" id="hero" aria-labelledby="hero-title">
+<section class="hero" id="hero">
   <div class="hero-inner">
-    <div class="hero-tag rv">
-      <span class="hero-tag-dot" aria-hidden="true"></span>
-      <span>Quantum · Matériaux · Énergie · 2026</span>
-    </div>
-    <h1 id="hero-title" class="rv d1">
-      <span class="h1-l1">Ingénierie</span>
-      <span class="h1-l2">Souveraine</span>
-      <span class="h1-l3">Augmentée</span>
-    </h1>
-    <p class="hero-desc rv d2">
-      La <strong>maîtrise humaine seule</strong> génère structurellement des victimes collatérales.
-      La <strong>technologie augmentée</strong> les élimine.
-      ChronoSenSium construit l'infrastructure accessible selon
-      la <strong>condition humaine</strong> — non le code postal.
-    </p>
+    <div class="hero-tag rv"><span class="hero-tag-dot"></span>Quantum · Matériaux · Énergie · 2026</div>
+    <h1 class="rv d1"><span class="h1a">Ingénierie</span><span class="h1b">Souveraine</span><span class="h1c">Augmentée</span></h1>
+    <p class="hero-desc rv d2">La <strong>maîtrise humaine seule</strong> génère structurellement des victimes collatérales. La <strong>technologie augmentée</strong> les élimine. ChronoSenSium construit l'infrastructure accessible selon la <strong>condition humaine</strong> — non le code postal.</p>
     <div class="hero-btns rv d3">
-      <a href="#vision" class="btn btn-primary">
-        Découvrir la Vision
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-      </a>
-      <a href="#contact" class="btn btn-ghost">
-        White Paper — sur demande
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
-      </a>
+      <a href="#vision" class="btn btn-p">Découvrir la Vision <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+      <a href="#contact" class="btn btn-g">White Paper — sur demande <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg></a>
     </div>
-    <div class="hero-metrics rv d4" aria-label="Chiffres clés">
-      <div class="hm"><span class="hm-val">10⁻⁷</span><span class="hm-lbl">Taux d'erreur qubit<br>Oxford 2025</span></div>
-      <div class="hm"><span class="hm-val">22 min</span><span class="hm-lbl">Plasma continu<br>CEA WEST 2025</span></div>
-      <div class="hm"><span class="hm-val">×26</span><span class="hm-lbl">FabCell vs ASML<br>Rapport de coût</span></div>
-      <div class="hm"><span class="hm-val">50+</span><span class="hm-lbl">Nations cibles<br>Bascule Universelle</span></div>
+    <div class="hero-metrics rv d4">
+      <div><span class="hm-val">10⁻⁷</span><div class="hm-lbl">Taux d'erreur qubit<br>Oxford 2025</div></div>
+      <div><span class="hm-val">22 min</span><div class="hm-lbl">Plasma continu<br>CEA WEST 2025</div></div>
+      <div><span class="hm-val">×26</span><div class="hm-lbl">FabCell vs ASML<br>Rapport de coût</div></div>
+      <div><span class="hm-val">50+</span><div class="hm-lbl">Nations cibles<br>Bascule Universelle</div></div>
     </div>
   </div>
-  <div class="hero-floats" aria-hidden="true">
-    <div class="hf-card">
-      <div class="hf-lbl">Record Oxford 2025</div>
-      <div class="hf-val">10⁻⁷</div>
-      <div class="hf-sub">Taux d'erreur qubit absolu</div>
-    </div>
-    <div class="hf-card">
-      <div class="hf-lbl">CEA WEST 2025</div>
-      <div class="hf-val">22 min</div>
-      <div class="hf-sub">Plasma continu — record mondial</div>
-    </div>
-    <div class="hf-card">
-      <div class="hf-lbl">FabCell CAPEX</div>
-      <div class="hf-val">€5–15M</div>
-      <div class="hf-sub">vs $400M machine ASML EUV</div>
-    </div>
+  <div class="hero-floats">
+    <div class="hf"><div class="hf-l">Record Oxford 2025</div><div class="hf-v">10⁻⁷</div><div class="hf-s">Taux d'erreur qubit absolu</div></div>
+    <div class="hf"><div class="hf-l">CEA WEST 2025</div><div class="hf-v">22 min</div><div class="hf-s">Plasma continu — record mondial</div></div>
+    <div class="hf"><div class="hf-l">FabCell CAPEX</div><div class="hf-v">€5–15M</div><div class="hf-s">vs $400M machine ASML EUV</div></div>
   </div>
-  <a href="#vision" class="scroll-cue" aria-label="Défiler vers le bas">
-    <div class="sc-line"></div>
-    <span>Explorer</span>
-  </a>
+  <a href="#vision" class="scroll-cue"><div class="sc-line"></div><span>Explorer</span></a>
 </section>
 
-<!-- TICKER -->
-<div class="ticker-wrap" aria-hidden="true">
-  <div class="ticker-track" id="ticker">
-    <span>⬡ Oxford 2025 — 10⁻⁷ taux d'erreur qubit</span>
-    <span>◈ CEA WEST — 22 min plasma continu record</span>
-    <span>◎ Purdue — GeS₂ qubits stables à température ambiante</span>
-    <span>⬡ IMEC — transistors MX₂ viabilité industrielle</span>
-    <span>◈ UBC Thunderbird — fusion D-D +15%</span>
-    <span>◎ FabCell CAPEX €5–15M vs $400M ASML EUV</span>
-    <span>⬡ Q-Score Standard — Apache 2.0 ouvert</span>
-    <span>◈ Bascule Universelle — 50+ nations cibles</span>
-    <span>⬡ Oxford 2025 — 10⁻⁷ taux d'erreur qubit</span>
-    <span>◈ CEA WEST — 22 min plasma continu record</span>
-    <span>◎ Purdue — GeS₂ qubits stables à température ambiante</span>
-    <span>⬡ IMEC — transistors MX₂ viabilité industrielle</span>
-    <span>◈ UBC Thunderbird — fusion D-D +15%</span>
-    <span>◎ FabCell CAPEX €5–15M vs $400M ASML EUV</span>
-    <span>⬡ Q-Score Standard — Apache 2.0 ouvert</span>
-    <span>◈ Bascule Universelle — 50+ nations cibles</span>
+<div class="ticker-wrap">
+  <div class="ticker">
+    <span>⬡ Oxford 2025 — 10⁻⁷ taux d'erreur qubit</span><span>◈ CEA WEST — 22 min plasma continu record</span><span>◎ Purdue — GeS₂ qubits stables à température ambiante</span><span>⬡ IMEC — transistors MX₂ viabilité industrielle</span><span>◈ UBC Thunderbird — fusion D-D +15%</span><span>◎ FabCell €5–15M vs $400M ASML EUV</span><span>⬡ Q-Score Standard — Apache 2.0 ouvert</span><span>◈ Bascule Universelle — 50+ nations cibles</span>
+    <span>⬡ Oxford 2025 — 10⁻⁷ taux d'erreur qubit</span><span>◈ CEA WEST — 22 min plasma continu record</span><span>◎ Purdue — GeS₂ qubits stables à température ambiante</span><span>⬡ IMEC — transistors MX₂ viabilité industrielle</span><span>◈ UBC Thunderbird — fusion D-D +15%</span><span>◎ FabCell €5–15M vs $400M ASML EUV</span><span>⬡ Q-Score Standard — Apache 2.0 ouvert</span><span>◈ Bascule Universelle — 50+ nations cibles</span>
   </div>
 </div>
 
-<!-- STATS -->
-<section class="stats-bar" aria-label="Statistiques clés">
-  <div class="wrap">
-    <div class="stats-grid">
-      <div class="stat rv"><span class="stat-n">10⁻⁷</span><span class="stat-l">Taux d'erreur qubit<br>Oxford 2025</span></div>
-      <div class="stat rv d1"><span class="stat-n">$400M</span><span class="stat-l">Machine ASML EUV<br>5 dans le monde</span></div>
-      <div class="stat rv d2"><span class="stat-n">€5–15M</span><span class="stat-l">CAPEX FabCell<br>Accessible universellement</span></div>
-      <div class="stat rv d3"><span class="stat-n" data-count="22">0</span><span class="stat-l"> min plasma continu<br>CEA WEST 2025</span></div>
-      <div class="stat rv d4"><span class="stat-n">50+</span><span class="stat-l">Nations cibles<br>Open source 2040</span></div>
-    </div>
+<div class="stats-bar">
+  <div class="stats-grid">
+    <div class="stat rv"><span class="stat-n">10⁻⁷</span><span class="stat-l">Taux d'erreur qubit<br>Oxford 2025</span></div>
+    <div class="stat rv d1"><span class="stat-n">$400M</span><span class="stat-l">Machine ASML EUV<br>5 dans le monde</span></div>
+    <div class="stat rv d2"><span class="stat-n">€5–15M</span><span class="stat-l">CAPEX FabCell<br>Accessible universellement</span></div>
+    <div class="stat rv d3"><span class="stat-n"><span data-count="22">0</span> min</span><span class="stat-l">Plasma continu record<br>CEA WEST 2025</span></div>
+    <div class="stat rv d4"><span class="stat-n">50+</span><span class="stat-l">Nations cibles<br>Open source 2040</span></div>
   </div>
-</section>
+</div>
 
-<!-- VISION -->
-<section class="sec" id="vision" aria-labelledby="vision-title">
+<section class="sec" id="vision">
 <div class="wrap">
   <p class="eyebrow rv">01 — Le Constat</p>
-  <h2 id="vision-title" class="rv d1">Le point de défaillance unique<br>de toute <em>la civilisation</em></h2>
+  <h2 class="rv d1">Le point de défaillance unique<br>de toute <em>la civilisation</em></h2>
   <div class="two-col">
     <div>
-      <p class="lead rv d2">La Loi de Moore est terminée au nœud 5nm. Trois acteurs contrôlent 100% de la production mondiale de chips avancés dans 5 usines sur deux pays. ASML à Veldhoven est le seul fabricant mondial de machines EUV. Une machine coûte $400 millions. C'est le point de défaillance unique de toute la technologie mondiale.</p>
-      <blockquote class="bq rv d3">
-        <p>ChronoSenSium ne rejette pas le capital — elle lui donne un objet digne de son échelle. La Courbe de Moore Quantique est l'exponentielle de la cohérence. La transition, c'est maintenant.</p>
-        <cite>Mathieu Casseri · Fondateur, ChronoSenSium Foundation</cite>
-      </blockquote>
+      <p class="lead rv d2">La Loi de Moore est terminée au nœud 5nm. Trois acteurs contrôlent 100% de la production mondiale de chips avancés dans 5 usines sur deux pays. ASML à Veldhoven est le seul fabricant mondial de machines EUV. Une machine coûte $400 millions.</p>
+      <div class="bq rv d3"><p>ChronoSenSium ne rejette pas le capital — elle lui donne un objet digne de son échelle. La Courbe de Moore Quantique est l'exponentielle de la cohérence. La transition, c'est maintenant.</p><cite>Mathieu Casseri · Fondateur, ChronoSenSium Foundation</cite></div>
     </div>
-    <div class="terminal rv d2" role="region" aria-label="Diagnostic infrastructure">
-      <div class="term-bar" aria-hidden="true">
-        <span class="td r"></span><span class="td y"></span><span class="td g"></span>
-        <span class="term-title">chronosensium — diagnostic.sh</span>
-      </div>
+    <div class="term rv d2">
+      <div class="term-bar"><span class="td r"></span><span class="td y"></span><span class="td g"></span><span class="term-title">chronosensium — diagnostic.sh</span></div>
       <div class="term-body">
-        <div><span class="tc-c"># Analyse infrastructure mondiale chips</span></div>
-        <div><span class="tc-p">$ </span><span class="tc-w">run --module chip_dependency</span></div>
-        <div><span class="tc-m">→ Fabricants EUV actifs : </span><span class="tc-g">1</span></div>
-        <div><span class="tc-m">→ Pays maîtrisant la chaîne : </span><span class="tc-g">2</span></div>
-        <div><span class="tc-m">→ Point de défaillance : </span><span class="tc-r">CRITIQUE</span></div>
+        <div><span class="tc"># Analyse infrastructure mondiale chips</span></div>
+        <div><span class="tp">$ </span><span class="tw">run --module chip_dependency</span></div>
+        <div><span>→ Fabricants EUV actifs : </span><span class="tg">1</span></div>
+        <div><span>→ Pays maîtrisant la chaîne : </span><span class="tg">2</span></div>
+        <div><span>→ Point de défaillance : </span><span class="tr">CRITIQUE</span></div>
         <div>&nbsp;</div>
-        <div><span class="tc-p">$ </span><span class="tc-w">run --module fabcell_alt</span></div>
-        <div><span class="tc-m">→ CAPEX FabCell : </span><span class="tc-g">€5–15M</span></div>
-        <div><span class="tc-m">→ CAPEX ASML EUV : </span><span class="tc-r">$400M</span></div>
-        <div><span class="tc-m">→ Rapport : </span><span class="tc-b">×26 FabCell</span></div>
-        <div><span class="tc-m">→ Dépendance EUV : </span><span class="tc-g">ZÉRO</span></div>
+        <div><span class="tp">$ </span><span class="tw">run --module fabcell_alt</span></div>
+        <div><span>→ CAPEX FabCell : </span><span class="tg">€5–15M</span></div>
+        <div><span>→ CAPEX ASML EUV : </span><span class="tr">$400M</span></div>
+        <div><span>→ Rapport : </span><span class="tb">×26 FabCell</span></div>
+        <div><span>→ Dépendance EUV : </span><span class="tg">ZÉRO</span></div>
         <div>&nbsp;</div>
-        <div><span class="tc-p">$ </span><span class="tc-w">conclusion</span></div>
-        <div><span class="tc-g">✓ FabCell : solution viable et souveraine</span></div>
+        <div><span class="tp">$ </span><span class="tw">conclusion</span></div>
+        <div><span class="tg">✓ FabCell : solution viable et souveraine</span></div>
       </div>
     </div>
   </div>
-
   <p class="eyebrow rv" style="margin-top:5rem">02 — La Trajectoire</p>
   <h2 class="rv d1">Quatre actes,<br><em>une seule direction</em></h2>
-  <div class="timeline rv d2">
-    <div class="tl-item">
-      <span class="tl-yr">2026–28</span>
-      <div class="tl-dot" aria-hidden="true"></div>
-      <div class="tl-body"><h4>FabCells Pilotes — France &amp; Europe</h4><p>Q-Score déposé Apache 2.0. Partenariats CEA, EPFL, Oxford Ionics, IMEC. Preuve de concept GeS₂. Architecture sous NDA.</p></div>
-    </div>
-    <div class="tl-item">
-      <span class="tl-yr">2029–32</span>
-      <div class="tl-dot" aria-hidden="true"></div>
-      <div class="tl-body"><h4>Intégration Fusion Compacte</h4><p>Micro-réacteurs intégrés. Programme Bascule Universelle opérationnel. Filière industrielle souveraine constituée.</p></div>
-    </div>
-    <div class="tl-item">
-      <span class="tl-yr">2033–36</span>
-      <div class="tl-dot" aria-hidden="true"></div>
-      <div class="tl-body"><h4>Réseau Européen 20+ FabCells</h4><p>Transmutation plasma PGM. Fin des fossiles industriels dans les nations équipées. Valorisation sur demande institutionnelle.</p></div>
-    </div>
-    <div class="tl-item">
-      <span class="tl-yr">2040–60</span>
-      <div class="tl-dot" aria-hidden="true"></div>
-      <div class="tl-body"><h4>Infrastructure Quantique Distribuée</h4><p>Énergie souveraine pour 500M+ habitants. 50+ nations équipées. Filière industrielle mondiale de haute valeur.</p></div>
-    </div>
+  <div class="tl rv d2">
+    <div class="tl-row"><span class="tl-yr">2026–28</span><div class="tl-dot"></div><div class="tl-body"><h4>FabCells Pilotes — France &amp; Europe</h4><p>Q-Score déposé Apache 2.0. Partenariats CEA, EPFL, Oxford Ionics, IMEC. Architecture sous NDA.</p></div></div>
+    <div class="tl-row"><span class="tl-yr">2029–32</span><div class="tl-dot"></div><div class="tl-body"><h4>Intégration Fusion Compacte</h4><p>Micro-réacteurs intégrés. Programme Bascule Universelle opérationnel. Filière industrielle souveraine constituée.</p></div></div>
+    <div class="tl-row"><span class="tl-yr">2033–36</span><div class="tl-dot"></div><div class="tl-body"><h4>Réseau Européen 20+ FabCells</h4><p>Transmutation plasma PGM. Fin des fossiles industriels dans les nations équipées.</p></div></div>
+    <div class="tl-row"><span class="tl-yr">2040–60</span><div class="tl-dot"></div><div class="tl-body"><h4>Infrastructure Quantique Distribuée</h4><p>Énergie souveraine pour 500M+ habitants. 50+ nations équipées.</p></div></div>
   </div>
 </div>
 </section>
 
-<!-- TECHNOLOGIE -->
-<section class="sec sec-dark" id="technologie" aria-labelledby="tech-title">
+<section class="sec sec-dark" id="technologie">
 <div class="wrap">
   <p class="eyebrow rv">03 — Architecture</p>
-  <h2 id="tech-title" class="rv d1">Trois piliers.<br><em>Zéro dépendance.</em></h2>
+  <h2 class="rv d1">Trois piliers.<br><em>Zéro dépendance.</em></h2>
   <p class="lead rv d2">ChronoSenSium ne remplace pas les Giga-Fabs — elle les contourne. Architecture complète disponible sous accord de confidentialité.</p>
-  <div class="cards rv d3">
-    <article class="card">
-      <div class="card-ico" aria-hidden="true">⬡</div>
-      <h3>FabCell</h3>
-      <p>Unité de fabrication atomique distribuée. 500–2 000 m², €5–15M de CAPEX, zéro dépendance EUV. ALD + e-beam sans masque + plasma contrôlé.</p>
-      <span class="card-tag">Specs sous NDA</span>
-    </article>
-    <article class="card">
-      <div class="card-ico" aria-hidden="true">◈</div>
-      <h3>Q-Score Standard</h3>
-      <p>Métrique ouverte de puissance quantique Apache 2.0. Lisible comme les TFLOPS pour GPU. Standard de facto — jamais privatisé.</p>
-      <span class="card-tag">Open source Apache 2.0</span>
-    </article>
-    <article class="card">
-      <div class="card-ico" aria-hidden="true">◎</div>
-      <h3>Bascule Universelle</h3>
-      <p>15% des revenus alloués au Global South. Aucune technologie déployée sans alternative universellement accessible. 50+ nations cibles.</p>
-      <span class="card-tag">Protocole ouvert sur demande</span>
-    </article>
+  <div class="cards">
+    <div class="card rv"><div class="card-ico">⬡</div><h3>FabCell</h3><p>Unité de fabrication atomique distribuée. 500–2 000 m², €5–15M de CAPEX, zéro dépendance EUV. ALD + e-beam sans masque + plasma contrôlé.</p><span class="card-tag">Specs sous NDA</span></div>
+    <div class="card rv d1"><div class="card-ico">◈</div><h3>Q-Score Standard</h3><p>Métrique ouverte de puissance quantique Apache 2.0. Lisible comme les TFLOPS pour GPU. Standard de facto — jamais privatisé.</p><span class="card-tag">Open source Apache 2.0</span></div>
+    <div class="card rv d2"><div class="card-ico">◎</div><h3>Bascule Universelle</h3><p>15% des revenus alloués au Global South. Aucune technologie déployée sans alternative universellement accessible. 50+ nations cibles.</p><span class="card-tag">Protocole ouvert sur demande</span></div>
   </div>
-  <div class="nda-box rv d4">
-    <div class="nda-ico" aria-hidden="true">🔐</div>
-    <div>
-      <h4>Architecture complète disponible sous accord de confidentialité</h4>
-      <p>Spécifications techniques, protocoles de fabrication et modèles économiques transmis aux institutions et investisseurs qualifiés après signature NDA standard. <a href="#contact">Nous contacter →</a></p>
-    </div>
+  <div class="nda-box rv d3">
+    <div class="nda-ico">🔐</div>
+    <div><h4>Architecture complète disponible sous accord de confidentialité</h4><p>Spécifications techniques, protocoles et modèles économiques transmis aux institutions et investisseurs qualifiés après signature NDA. <a href="#contact">Nous contacter →</a></p></div>
   </div>
 </div>
 </section>
 
-<!-- RECHERCHE -->
-<section class="sec" id="recherche" aria-labelledby="rech-title">
+<section class="sec" id="recherche">
 <div class="wrap">
   <p class="eyebrow rv">04 — Fondements Scientifiques</p>
-  <h2 id="rech-title" class="rv d1">Peer-reviewed.<br><em>Reproductible. Vérifiable.</em></h2>
+  <h2 class="rv d1">Peer-reviewed.<br><em>Reproductible. Vérifiable.</em></h2>
   <p class="lead rv d2">Chaque pilier repose sur un résultat expérimental publié. Aucune spéculation.</p>
   <div class="bt-list">
     <div class="bt rv"><span class="bt-badge">Oxford 2025</span><div><strong>Taux d'erreur de porte : 1,5 × 10⁻⁷ — Physical Review Letters</strong><p>Record mondial absolu. Portes micro-ondes à température ambiante, sans blindage magnétique.</p></div></div>
@@ -299,81 +402,66 @@
 </div>
 </section>
 
-<!-- MANIFESTE -->
-<section class="sec sec-dark" id="manifeste" aria-labelledby="mani-title">
+<section class="sec sec-dark" id="manifeste">
 <div class="wrap">
   <p class="eyebrow rv">05 — Manifeste</p>
-  <h2 id="mani-title" class="rv d1">Ce en quoi nous<br><em>croyons. Sans compromis.</em></h2>
+  <h2 class="rv d1">Ce en quoi nous<br><em>croyons. Sans compromis.</em></h2>
   <p class="lead rv d2">Convictions fondatrices — non négociables, non politiques, non idéologiques.</p>
   <div class="mani-grid">
-    <article class="mani rv"><div class="mani-n">01</div><h4>L'expertise humaine non augmentée génère structurellement des victimes</h4><p>Un chirurgien augmenté sauve celui qu'un homologue non augmenté aurait sacrifié au nom de la "pratique". L'accès à cette augmentation ne doit dépendre ni du code postal, ni du nom de famille — mais de la condition humaine.</p></article>
-    <article class="mani rv d1"><div class="mani-n">02</div><h4>La dépendance technologique est un risque de civilisation</h4><p>Cinq usines sur deux pays produisent 100% des chips avancés mondiaux. Ce n'est pas une situation géopolitique — c'est un point de défaillance unique que l'histoire ne pardonnera pas.</p></article>
-    <article class="mani rv d2"><div class="mani-n">03</div><h4>Le capital n'a de sens que dirigé vers un objet à sa hauteur</h4><p>ChronoSenSium ne rejette pas l'argent — elle lui donne une direction. Le capital est un outil. Sa légitimité se mesure à l'objet auquel il s'applique, non à son origine.</p></article>
-    <article class="mani rv d3"><div class="mani-n">04</div><h4>L'open source est une stratégie, pas une idéologie</h4><p>Un standard ouvert adopté par 50 nations crée plus de valeur qu'un brevet monopolisé. Linux. TCP/IP. Le Web. La Courbe de Moore Quantique.</p></article>
-    <article class="mani rv"><div class="mani-n">05</div><h4>La fusion n'est plus un horizon — c'est un calendrier</h4><p>22 minutes de plasma continu. +15% en réacteur de table. La fusion compacte sera industrielle avant 2035.</p></article>
-    <article class="mani rv d1"><div class="mani-n">06</div><h4>Aucune transition ne peut laisser un continent derrière</h4><p>Une civilisation à deux vitesses énergétiques est en conflit structurel permanent. La Bascule Universelle n'est pas de la philanthropie — c'est de la physique sociale.</p></article>
-    <article class="mani rv d2"><div class="mani-n">07</div><h4>La France a un avantage dormant unique au monde</h4><p>CEA, CNRS, EPFL, expertise plasma mondiale. Le record de plasma vient de Cadarache — pas de Palo Alto. ChronoSenSium active cet avantage dormant.</p></article>
-    <article class="mani rv d3"><div class="mani-n">08</div><h4>Les prochaines décennies : infrastructure ou rien</h4><p>Non les applications — les ingénieurs qui posent les fondations physiques de ce que l'humanité construira pendant les 200 prochaines années.</p></article>
+    <div class="mani rv"><div class="mani-n">01</div><h4>L'expertise humaine non augmentée génère structurellement des victimes</h4><p>Un chirurgien augmenté sauve celui qu'un homologue non augmenté aurait sacrifié. L'accès à cette augmentation doit dépendre de la condition humaine — non du code postal.</p></div>
+    <div class="mani rv d1"><div class="mani-n">02</div><h4>La dépendance technologique est un risque de civilisation</h4><p>Cinq usines sur deux pays produisent 100% des chips avancés mondiaux. C'est un point de défaillance unique que l'histoire ne pardonnera pas.</p></div>
+    <div class="mani rv d2"><div class="mani-n">03</div><h4>Le capital n'a de sens que dirigé vers un objet à sa hauteur</h4><p>ChronoSenSium ne rejette pas l'argent — elle lui donne une direction. Sa légitimité se mesure à l'objet auquel il s'applique, non à son origine.</p></div>
+    <div class="mani rv d3"><div class="mani-n">04</div><h4>L'open source est une stratégie, pas une idéologie</h4><p>Un standard ouvert adopté par 50 nations crée plus de valeur qu'un brevet monopolisé. Linux. TCP/IP. Le Web. La Courbe de Moore Quantique.</p></div>
+    <div class="mani rv"><div class="mani-n">05</div><h4>La fusion n'est plus un horizon — c'est un calendrier</h4><p>22 minutes de plasma continu. +15% en réacteur de table. La fusion compacte sera industrielle avant 2035.</p></div>
+    <div class="mani rv d1"><div class="mani-n">06</div><h4>Aucune transition ne peut laisser un continent derrière</h4><p>Une civilisation à deux vitesses énergétiques est en conflit structurel permanent. La Bascule Universelle n'est pas de la philanthropie — c'est de la physique sociale.</p></div>
+    <div class="mani rv d2"><div class="mani-n">07</div><h4>La France a un avantage dormant unique au monde</h4><p>CEA, CNRS, EPFL, expertise plasma mondiale. Le record de plasma vient de Cadarache — pas de Palo Alto.</p></div>
+    <div class="mani rv d3"><div class="mani-n">08</div><h4>Les prochaines décennies : infrastructure ou rien</h4><p>Non les applications — les ingénieurs qui posent les fondations physiques de ce que l'humanité construira pendant les 200 prochaines années.</p></div>
   </div>
 </div>
 </section>
 
-<!-- FONDATION -->
-<section class="sec" id="fondation" aria-labelledby="fond-title">
+<section class="sec" id="fondation">
 <div class="wrap">
   <p class="eyebrow rv">06 — Gouvernance</p>
-  <h2 id="fond-title" class="rv d1">Une Foundation immunisée<br><em>contre les cycles politiques.</em></h2>
+  <h2 class="rv d1">Une Foundation immunisée<br><em>contre les cycles politiques.</em></h2>
   <div class="two-col">
     <div>
-      <p class="lead rv d2">Mandat statutaire minimum 50 ans. Protocoles core en open source. Co-détention institutionnelle des brevets. Clause Global South obligatoire. Aucune technologie ChronoSenSium ne peut être privatisée.</p>
-      <blockquote class="bq rv d3">
-        <p>Aucun continent sur le carreau. L'augmentation technologique ne peut être déployée dans les économies avancées sans qu'une alternative équivalente soit universellement accessible.</p>
-      </blockquote>
+      <p class="lead rv d2">Mandat statutaire minimum 50 ans. Protocoles core en open source. Co-détention institutionnelle des brevets. Clause Global South obligatoire.</p>
+      <div class="bq rv d3"><p>Aucun continent sur le carreau. L'augmentation technologique ne peut être déployée dans les économies avancées sans qu'une alternative équivalente soit universellement accessible.</p></div>
       <p class="eyebrow rv" style="margin-top:2.5rem">Co-fondateurs institutionnels cibles</p>
       <div class="pills rv d1">
-        <span class="pill">CEA Cadarache</span>
-        <span class="pill">EPFL Lausanne</span>
-        <span class="pill">Oxford Ionics</span>
-        <span class="pill">Fraunhofer</span>
-        <span class="pill">IMEC Leuven</span>
-        <span class="pill">CNRS</span>
-        <span class="pill">IRENA</span>
-        <span class="pill">Commonwealth Fusion Systems</span>
+        <span class="pill">CEA Cadarache</span><span class="pill">EPFL Lausanne</span><span class="pill">Oxford Ionics</span><span class="pill">Fraunhofer</span><span class="pill">IMEC Leuven</span><span class="pill">CNRS</span><span class="pill">IRENA</span><span class="pill">Commonwealth Fusion Systems</span>
       </div>
     </div>
-    <div class="terminal rv d2" role="region" aria-label="Gouvernance">
-      <div class="term-bar" aria-hidden="true">
-        <span class="td r"></span><span class="td y"></span><span class="td g"></span>
-        <span class="term-title">foundation — governance.md</span>
-      </div>
+    <div class="term rv d2">
+      <div class="term-bar"><span class="td r"></span><span class="td y"></span><span class="td g"></span><span class="term-title">foundation — governance.md</span></div>
       <div class="term-body">
-        <div><span class="tc-c"># Principes fondateurs — non négociables</span></div>
+        <div><span class="tc"># Principes fondateurs — non négociables</span></div>
         <div>&nbsp;</div>
-        <div><span class="tc-b">MANDAT_DURÉE</span> <span class="tc-m">= </span><span class="tc-g">50 ans minimum</span></div>
-        <div><span class="tc-b">BREVETS</span> <span class="tc-m">= </span><span class="tc-g">co-détenus institutionnels</span></div>
-        <div><span class="tc-b">PROTOCOLES_CORE</span> <span class="tc-m">= </span><span class="tc-g">open source obligatoire</span></div>
-        <div><span class="tc-b">GLOBAL_SOUTH</span> <span class="tc-m">= </span><span class="tc-g">15% revenus alloués</span></div>
-        <div><span class="tc-b">PRIVATISATION</span> <span class="tc-m">= </span><span class="tc-r">INTERDIT statut</span></div>
-        <div><span class="tc-b">CYCLES_POLITIQUES</span> <span class="tc-m">= </span><span class="tc-r">IMMUNISÉ</span></div>
+        <div><span class="tb">MANDAT_DURÉE</span><span> = </span><span class="tg">50 ans minimum</span></div>
+        <div><span class="tb">BREVETS</span><span> = </span><span class="tg">co-détenus institutionnels</span></div>
+        <div><span class="tb">PROTOCOLES_CORE</span><span> = </span><span class="tg">open source obligatoire</span></div>
+        <div><span class="tb">GLOBAL_SOUTH</span><span> = </span><span class="tg">15% revenus alloués</span></div>
+        <div><span class="tb">PRIVATISATION</span><span> = </span><span class="tr">INTERDIT statut</span></div>
+        <div><span class="tb">CYCLES_POLITIQUES</span><span> = </span><span class="tr">IMMUNISÉ</span></div>
         <div>&nbsp;</div>
-        <div><span class="tc-c"># Accès architecture complète</span></div>
-        <div><span class="tc-m">→ </span><span class="tc-g">NDA standard signé</span></div>
-        <div><span class="tc-m">→ </span><span class="tc-g">Institution ou investisseur qualifié</span></div>
-        <div><span class="tc-m">→ </span><span class="tc-g">Réponse sous 48h</span></div>
+        <div><span class="tc"># Accès architecture complète</span></div>
+        <div><span>→ </span><span class="tg">NDA standard signé</span></div>
+        <div><span>→ </span><span class="tg">Institution ou investisseur qualifié</span></div>
+        <div><span>→ </span><span class="tg">Réponse sous 48h</span></div>
       </div>
     </div>
   </div>
 </div>
 </section>
 
-<!-- FONDATEUR -->
-<section class="sec sec-dark" id="fondateur" aria-labelledby="fdr-title">
+<section class="sec sec-dark" id="fondateur">
 <div class="wrap">
   <p class="eyebrow rv">07 — Origine</p>
-  <h2 id="fdr-title" class="rv d1">Derrière la vision,<br><em>une conviction fondatrice.</em></h2>
+  <h2 class="rv d1">Derrière la vision,<br><em>une conviction fondatrice.</em></h2>
   <p class="lead rv d2">ChronoSenSium n'est pas un comité anonyme. C'est une conviction portée, construite et mise en œuvre avec la même rigueur que les sciences sur lesquelles elle s'appuie.</p>
   <div class="founder rv d3">
-    <div class="founder-av" aria-label="Mathieu Casseri">MC</div>
+    <div class="founder-av">MC</div>
     <div class="founder-info">
       <h4>Mathieu Casseri</h4>
       <p class="founder-role">Fondateur · ChronoSenSium Foundation · Île-de-France</p>
@@ -383,157 +471,111 @@
 </div>
 </section>
 
-<!-- FAQ -->
-<section class="sec" id="faq" aria-labelledby="faq-title">
+<section class="sec" id="faq">
 <div class="wrap">
   <p class="eyebrow rv">08 — Questions</p>
-  <h2 id="faq-title" class="rv d1">Les questions<br><em>qu'on nous pose.</em></h2>
-  <div class="faq-list rv d2" role="list">
-    <div class="faq-item" role="listitem">
-      <button class="faq-q" onclick="faqToggle(this)" aria-expanded="false">
-        <span>Qu'est-ce qu'une FabCell exactement ?</span>
-        <span class="faq-ico" aria-hidden="true">+</span>
-      </button>
-      <div class="faq-body" role="region"><p>Une FabCell est une unité de fabrication atomique distribuée de 500 à 2 000 m², CAPEX €5–15M. ALD + e-beam sans masque + plasma contrôlé. Zéro dépendance ASML EUV. Spécifications complètes sous NDA.</p></div>
-    </div>
-    <div class="faq-item" role="listitem">
-      <button class="faq-q" onclick="faqToggle(this)" aria-expanded="false">
-        <span>Pourquoi le Q-Score et pas une métrique existante ?</span>
-        <span class="faq-ico" aria-hidden="true">+</span>
-      </button>
-      <div class="faq-body" role="region"><p>Les métriques actuelles sont soit trop techniques soit propriétaires. Le Q-Score est lisible par tout DSI comme les TFLOPS. Déposé Apache 2.0 — il appartient à l'écosystème mondial.</p></div>
-    </div>
-    <div class="faq-item" role="listitem">
-      <button class="faq-q" onclick="faqToggle(this)" aria-expanded="false">
-        <span>Êtes-vous en compétition avec IBM Quantum ou Google ?</span>
-        <span class="faq-ico" aria-hidden="true">+</span>
-      </button>
-      <div class="faq-body" role="region"><p>Non. IBM et Google construisent des ordinateurs quantiques. ChronoSenSium construit l'infrastructure de fabrication des composants dont ces machines ont besoin. Fournisseur potentiel — pas concurrent.</p></div>
-    </div>
-    <div class="faq-item" role="listitem">
-      <button class="faq-q" onclick="faqToggle(this)" aria-expanded="false">
-        <span>Pourquoi la France comme point de départ ?</span>
-        <span class="faq-ico" aria-hidden="true">+</span>
-      </button>
-      <div class="faq-body" role="region"><p>Le CEA détient 70 ans d'expertise plasma unique. Le record mondial de plasma vient de Cadarache — pas de Tokyo ni de Palo Alto. Avantage structurel dormant que ChronoSenSium active.</p></div>
-    </div>
-    <div class="faq-item" role="listitem">
-      <button class="faq-q" onclick="faqToggle(this)" aria-expanded="false">
-        <span>Comment accéder à l'architecture complète et au White Paper ?</span>
-        <span class="faq-ico" aria-hidden="true">+</span>
-      </button>
-      <div class="faq-body" role="region"><p>Après un premier échange et signature d'un NDA standard. Écrire à foundation@chronosensiumtechnologies.org — réponse sous 48h garantie.</p></div>
-    </div>
+  <h2 class="rv d1">Les questions<br><em>qu'on nous pose.</em></h2>
+  <div class="faq-list rv d2">
+    <div class="faq-item"><button class="faq-q" onclick="faqToggle(this)"><span>Qu'est-ce qu'une FabCell exactement ?</span><span class="faq-ico">+</span></button><div class="faq-body"><p>Une FabCell est une unité de fabrication atomique distribuée de 500 à 2 000 m², CAPEX €5–15M. ALD + e-beam sans masque + plasma contrôlé. Zéro dépendance ASML EUV. Spécifications complètes sous NDA.</p></div></div>
+    <div class="faq-item"><button class="faq-q" onclick="faqToggle(this)"><span>Pourquoi le Q-Score et pas une métrique existante ?</span><span class="faq-ico">+</span></button><div class="faq-body"><p>Les métriques actuelles sont soit trop techniques soit propriétaires. Le Q-Score est lisible par tout DSI comme les TFLOPS. Déposé Apache 2.0 — il appartient à l'écosystème mondial.</p></div></div>
+    <div class="faq-item"><button class="faq-q" onclick="faqToggle(this)"><span>Êtes-vous en compétition avec IBM Quantum ou Google ?</span><span class="faq-ico">+</span></button><div class="faq-body"><p>Non. IBM et Google construisent des ordinateurs quantiques. ChronoSenSium construit l'infrastructure de fabrication des composants dont ces machines ont besoin. Fournisseur potentiel — pas concurrent.</p></div></div>
+    <div class="faq-item"><button class="faq-q" onclick="faqToggle(this)"><span>Pourquoi la France comme point de départ ?</span><span class="faq-ico">+</span></button><div class="faq-body"><p>Le CEA détient 70 ans d'expertise plasma unique. Le record mondial de plasma vient de Cadarache — pas de Tokyo ni de Palo Alto. Avantage structurel dormant que ChronoSenSium active.</p></div></div>
+    <div class="faq-item"><button class="faq-q" onclick="faqToggle(this)"><span>Comment accéder à l'architecture complète et au White Paper ?</span><span class="faq-ico">+</span></button><div class="faq-body"><p>Après un premier échange et signature d'un NDA standard. Écrire à foundation@chronosensiumtechnologies.org — réponse sous 48h garantie.</p></div></div>
   </div>
 </div>
 </section>
 
-<!-- CONTACT -->
-<section class="sec sec-dark" id="contact" aria-labelledby="contact-title">
+<section class="sec sec-dark" id="contact">
 <div class="wrap">
   <p class="eyebrow rv">09 — Collaborer</p>
-  <h2 id="contact-title" class="rv d1">Construisons ensemble<br><em>l'infrastructure.</em></h2>
+  <h2 class="rv d1">Construisons ensemble<br><em>l'infrastructure.</em></h2>
   <div class="contact-grid">
     <div class="rv">
       <h3>Chercheur, industriel,<br>investisseur ?</h3>
-      <p>Si vous voyez dans ChronoSenSium une convergence avec vos travaux ou objectifs — écrivez-nous. White Paper et architecture disponibles après premier échange.</p>
+      <p style="margin-top:1rem">Si vous voyez dans ChronoSenSium une convergence avec vos travaux ou objectifs — écrivez-nous. White Paper et architecture disponibles après premier échange.</p>
       <p style="margin-top:.8rem">Toutes les demandes sérieuses reçoivent une réponse sous 48 heures.</p>
-      <a class="contact-link" href="mailto:foundation@chronosensiumtechnologies.org" aria-label="Envoyer un email à la Foundation">
-        foundation@chronosensiumtechnologies.org
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-      </a>
-      <div class="contact-status" role="status" aria-live="polite">
-        <span aria-hidden="true"></span>DISPONIBLE · RÉPONSE 48H
-      </div>
+      <a class="contact-link" href="mailto:foundation@chronosensiumtechnologies.org">foundation@chronosensiumtechnologies.org <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></a>
+      <div class="cstatus"><span></span>DISPONIBLE · RÉPONSE 48H</div>
     </div>
     <div class="rv d2">
-      <form id="contact-form" action="https://formspree.io/f/XXXXXXXX" method="POST" novalidate>
-        <div class="field">
-          <label for="f-name">Nom / Institution</label>
-          <input id="f-name" type="text" name="name" placeholder="Dr. Marie Curie — CNRS" required autocomplete="name">
-        </div>
-        <div class="field">
-          <label for="f-email">Email</label>
-          <input id="f-email" type="email" name="_replyto" placeholder="contact@institution.fr" required autocomplete="email">
-        </div>
-        <div class="field">
-          <label for="f-subject">Sujet</label>
-          <input id="f-subject" type="text" name="subject" placeholder="Recherche / Partenariat / Investissement / NDA">
-        </div>
-        <div class="field">
-          <label for="f-msg">Message</label>
-          <textarea id="f-msg" name="message" placeholder="Décrivez votre proposition..." required></textarea>
-        </div>
-        <div id="form-msg" role="alert" aria-live="polite" style="display:none"></div>
-        <button class="btn btn-primary btn-full" type="submit">
-          Envoyer
-          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
-        </button>
+      <form id="cform" action="https://formspree.io/f/XXXXXXXX" method="POST">
+        <div class="field"><label>Nom / Institution</label><input type="text" name="name" placeholder="Dr. Marie Curie — CNRS" required></div>
+        <div class="field"><label>Email</label><input type="email" name="_replyto" placeholder="contact@institution.fr" required></div>
+        <div class="field"><label>Sujet</label><input type="text" name="subject" placeholder="Recherche / Partenariat / Investissement / NDA"></div>
+        <div class="field"><label>Message</label><textarea name="message" placeholder="Décrivez votre proposition..."></textarea></div>
+        <div id="fmsg"></div>
+        <button class="btn btn-p" type="submit" style="width:100%;justify-content:center;margin-top:.4rem">Envoyer <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></button>
       </form>
     </div>
   </div>
 </div>
 </section>
 
-<!-- FOOTER -->
-<footer role="contentinfo">
-  <div class="footer-inner">
+<footer>
+  <div class="footer-in">
     <div class="footer-brand">
       <div class="footer-logo">⬡ CHRONO<em>SEN</em>SIUM</div>
       <p>La couche d'infrastructure de la prochaine civilisation. Accessible selon la condition humaine — non le code postal. Mandat fondateur : 50 ans minimum.</p>
       <div class="footer-sec">🔒 TLS 1.3 · Migration post-quantique planifiée 2027</div>
     </div>
-    <div class="footer-col">
-      <h5>Navigation</h5>
-      <a href="#vision">Vision</a>
-      <a href="#technologie">Technologie</a>
-      <a href="#recherche">Recherche</a>
-      <a href="#manifeste">Manifeste</a>
-    </div>
-    <div class="footer-col">
-      <h5>Foundation</h5>
-      <a href="#fondation">Gouvernance</a>
-      <a href="#fondateur">Fondateur</a>
-      <a href="#faq">FAQ</a>
-    </div>
-    <div class="footer-col">
-      <h5>Contact</h5>
-      <a href="mailto:foundation@chronosensiumtechnologies.org">Email Foundation</a>
-      <a href="#contact">White Paper — sur demande</a>
-      <a href="#contact">Architecture — sous NDA</a>
-    </div>
+    <div class="footer-col"><h5>Navigation</h5><a href="#vision">Vision</a><a href="#technologie">Technologie</a><a href="#recherche">Recherche</a><a href="#manifeste">Manifeste</a></div>
+    <div class="footer-col"><h5>Foundation</h5><a href="#fondation">Gouvernance</a><a href="#fondateur">Fondateur</a><a href="#faq">FAQ</a></div>
+    <div class="footer-col"><h5>Contact</h5><a href="mailto:foundation@chronosensiumtechnologies.org">Email Foundation</a><a href="#contact">White Paper — sur demande</a><a href="#contact">Architecture — sous NDA</a></div>
   </div>
   <div class="footer-bottom">
     <p>© 2026 ChronoSenSium Technologies Foundation · Île-de-France, France</p>
-    <p><a href="https://creativecommons.org/licenses/by/4.0/" rel="noopener">CC-BY 4.0</a> · Protocoles sur demande institutionnelle</p>
+    <p><a href="https://creativecommons.org/licenses/by/4.0/">CC-BY 4.0</a> · Protocoles sur demande institutionnelle</p>
   </div>
 </footer>
 
 <script>
-(function(){
-  var prog=0;
-  var iv=setInterval(function(){
-    prog=Math.min(prog+Math.random()*15+5,100);
-    var b=document.getElementById('lbar');
-    var p=document.getElementById('lpct');
-    if(b)b.style.width=prog+'%';
-    if(p)p.textContent=Math.round(prog)+'%';
-    if(prog>=100){clearInterval(iv);setTimeout(function(){var l=document.getElementById('loader');if(l)l.classList.add('out');},300);}
-  },80);
-  setTimeout(function(){var l=document.getElementById('loader');if(l)l.classList.add('out');},3000);
-  window.addEventListener('load',function(){clearInterval(iv);var l=document.getElementById('loader');if(l)l.classList.add('out');});
-  var mx=0,my=0,rx=0,ry=0;
-  var cur=document.getElementById('cur'),curR=document.getElementById('cur-ring');
-  document.addEventListener('mousemove',function(e){mx=e.clientX;my=e.clientY;if(cur){cur.style.left=mx+'px';cur.style.top=my+'px';}});
-  if(curR)(function a(){rx+=(mx-rx)*.1;ry+=(my-ry)*.1;curR.style.left=rx+'px';curR.style.top=ry+'px';requestAnimationFrame(a);})();
-  var cvs=document.getElementById('cvs');
-  if(cvs){var ctx=cvs.getContext('2d'),W,H,pts=[];function rsz(){W=cvs.width=innerWidth;H=cvs.height=innerHeight;}rsz();window.addEventListener('resize',rsz);function Pt(){this.reset();}Pt.prototype.reset=function(){this.x=Math.random()*W;this.y=Math.random()*H;this.vx=(Math.random()-.5)*.22;this.vy=(Math.random()-.5)*.22;this.s=Math.random()*1.2+.3;this.a=Math.random()*.35+.06;};Pt.prototype.u=function(){this.x+=this.vx;this.y+=this.vy;if(this.x<0||this.x>W||this.y<0||this.y>H)this.reset();};Pt.prototype.d=function(){ctx.beginPath();ctx.arc(this.x,this.y,this.s,0,Math.PI*2);ctx.fillStyle='rgba(124,58,237,'+this.a+')';ctx.fill();};for(var i=0;i<120;i++)pts.push(new Pt());(function anim(){ctx.clearRect(0,0,W,H);pts.forEach(function(p){p.u();p.d();});for(var i=0;i<pts.length;i++)for(var j=i+1;j<pts.length;j++){var d=Math.hypot(pts[i].x-pts[j].x,pts[i].y-pts[j].y);if(d<95){ctx.beginPath();ctx.moveTo(pts[i].x,pts[i].y);ctx.lineTo(pts[j].x,pts[j].y);ctx.strokeStyle='rgba(124,58,237,'+(0.09*(1-d/95))+')';ctx.lineWidth=.4;ctx.stroke();}}requestAnimationFrame(anim);})();}
-  var nb=document.getElementById('navbar');
-  window.addEventListener('scroll',function(){if(nb)nb.classList.toggle('scrolled',scrollY>60);});
-  new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)e.target.classList.add('on');});},{threshold:.08}).observe&&document.querySelectorAll('.rv').forEach(function(el){new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)e.target.classList.add('on');});},{threshold:.08}).observe(el);});
-  window.toggleMob=function(){var m=document.getElementById('mob');if(m){var o=m.classList.toggle('open');document.body.style.overflow=o?'hidden':'';}};
-  window.closeMob=function(){var m=document.getElementById('mob');if(m){m.classList.remove('open');document.body.style.overflow='';}};
-  window.faqToggle=function(btn){var item=btn.parentElement,was=item.classList.contains('open');document.querySelectorAll('.faq-item').forEach(function(i){i.classList.remove('open');});if(!was)item.classList.add('open');};
-  document.addEventListener('keydown',function(e){if(e.key==='Escape')window.closeMob();});
-})();
+// LOADER — failsafe absolu
+var _l=document.getElementById('loader');
+var _b=document.getElementById('lbar');
+function _hide(){if(_l){_l.style.opacity='0';setTimeout(function(){_l.style.display='none';},700);}}
+var _p=0,_iv=setInterval(function(){_p=Math.min(_p+Math.random()*15+5,100);if(_b)_b.style.width=_p+'%';if(_p>=100){clearInterval(_iv);_hide();}},80);
+window.addEventListener('load',function(){clearInterval(_iv);_hide();});
+setTimeout(function(){clearInterval(_iv);_hide();},2500);
+
+// CURSOR
+var _cur=document.getElementById('cur'),_cr=document.getElementById('cur-ring'),_mx=0,_my=0,_rx=0,_ry=0;
+document.addEventListener('mousemove',function(e){_mx=e.clientX;_my=e.clientY;if(_cur){_cur.style.left=_mx+'px';_cur.style.top=_my+'px';}});
+if(_cr)(function a(){_rx+=(_mx-_rx)*.1;_ry+=(_my-_ry)*.1;_cr.style.left=_rx+'px';_cr.style.top=_ry+'px';requestAnimationFrame(a);})();
+document.querySelectorAll('a,button,.card,.bt,.faq-q,.pill,.mani').forEach(function(el){el.addEventListener('mouseenter',function(){if(_cur)_cur.classList.add('hov');if(_cr)_cr.classList.add('hov');});el.addEventListener('mouseleave',function(){if(_cur)_cur.classList.remove('hov');if(_cr)_cr.classList.remove('hov');});});
+
+// CANVAS
+var _c=document.getElementById('cvs');
+if(_c){var _x=_c.getContext('2d'),_W,_H,_pts=[];function _rsz(){_W=_c.width=innerWidth;_H=_c.height=innerHeight;}_rsz();window.addEventListener('resize',_rsz);function _Pt(){this.r();}
+_Pt.prototype.r=function(){this.x=Math.random()*_W;this.y=Math.random()*_H;this.vx=(Math.random()-.5)*.22;this.vy=(Math.random()-.5)*.22;this.s=Math.random()*1.2+.3;this.a=Math.random()*.35+.06;};
+_Pt.prototype.u=function(){this.x+=this.vx;this.y+=this.vy;if(this.x<0||this.x>_W||this.y<0||this.y>_H)this.r();};
+_Pt.prototype.d=function(){_x.beginPath();_x.arc(this.x,this.y,this.s,0,Math.PI*2);_x.fillStyle='rgba(124,58,237,'+this.a+')';_x.fill();};
+for(var _i=0;_i<110;_i++)_pts.push(new _Pt());
+(function _a(){_x.clearRect(0,0,_W,_H);_pts.forEach(function(p){p.u();p.d();});for(var i=0;i<_pts.length;i++)for(var j=i+1;j<_pts.length;j++){var d=Math.hypot(_pts[i].x-_pts[j].x,_pts[i].y-_pts[j].y);if(d<90){_x.beginPath();_x.moveTo(_pts[i].x,_pts[i].y);_x.lineTo(_pts[j].x,_pts[j].y);_x.strokeStyle='rgba(124,58,237,'+(0.09*(1-d/90))+')';_x.lineWidth=.4;_x.stroke();}}requestAnimationFrame(_a);})();}
+
+// NAV
+var _nb=document.getElementById('navbar');
+window.addEventListener('scroll',function(){if(_nb)_nb.classList.toggle('scrolled',scrollY>60);});
+
+// REVEAL
+var _ro=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)e.target.classList.add('on');});},{threshold:.08});
+document.querySelectorAll('.rv').forEach(function(el){_ro.observe(el);});
+
+// COUNTER
+var _co=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting&&!e.target.dataset.done){e.target.dataset.done='1';var t=parseInt(e.target.getAttribute('data-count')),c=0,s=t/60,iv=setInterval(function(){c=Math.min(c+s,t);e.target.textContent=Math.round(c);if(c>=t)clearInterval(iv);},16);}});},{threshold:.5});
+document.querySelectorAll('[data-count]').forEach(function(el){_co.observe(el);});
+
+// MOBILE
+function toggleMob(){var m=document.getElementById('mob');if(m){var o=m.classList.toggle('open');document.body.style.overflow=o?'hidden':'';}}
+function closeMob(){var m=document.getElementById('mob');if(m){m.classList.remove('open');document.body.style.overflow='';}}
+
+// FAQ
+function faqToggle(btn){var item=btn.parentElement,was=item.classList.contains('open');document.querySelectorAll('.faq-item').forEach(function(i){i.classList.remove('open');});if(!was)item.classList.add('open');}
+
+// FORM
+var _f=document.getElementById('cform'),_fm=document.getElementById('fmsg');
+if(_f)_f.addEventListener('submit',function(e){e.preventDefault();var d=new FormData(_f);fetch(_f.action,{method:'POST',body:d,headers:{'Accept':'application/json'}}).then(function(r){if(_fm){_fm.textContent=r.ok?'✓ Message envoyé — réponse sous 48h.':'Erreur. Écrivez à foundation@chronosensiumtechnologies.org';_fm.className=r.ok?'ok':'err';_fm.style.display='block';}if(r.ok)_f.reset();}).catch(function(){if(_fm){_fm.textContent='Erreur réseau. Écrivez à foundation@chronosensiumtechnologies.org';_fm.className='err';_fm.style.display='block';}});});
+
+document.addEventListener('keydown',function(e){if(e.key==='Escape')closeMob();});
 </script>
+</body>
+</html>
